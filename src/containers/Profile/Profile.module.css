@@ -1,3 +1,26 @@
 .profile {
-    background-color: beige;
+
+}
+.userAvatar {
+    border-radius: 100%;
+    width: auto;
+    height: auto;
+}
+.userAvaratAndInfo {
+    border-bottom: solid black 2px;
+}
+.topBlock {
+}
+.userInfo {
+    display: inline-block;
+}
+.taskList {
+    background: aqua;
+}
+.albumsBar {
+}
+.albumCover {
+    margin-top: 25px;
+    margin-left: 25px;
+    background: aqua;
 }

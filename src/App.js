@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Layout from './containers/Layout/Layout'
 
