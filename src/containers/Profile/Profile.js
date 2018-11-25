@@ -7,9 +7,9 @@ class UserInfo extends Component {
         return (
             <div>
                 <p>{this.props.user.name}</p>
-                <p>{this.props.user.adress}</p>
+                <p>{this.props.user.address}</p>
                 <p>{this.props.user.phone}</p>
-                <p>{this.props.user.workAdress}</p>
+                <p>{this.props.user.workAddress}</p>
             </div>
         )
     }
@@ -22,9 +22,9 @@ class Profile extends Component {
             user: {
                 id: '',
                 name: '',
-                adress: '',
+                address: '',
                 phone: '',
-                workAdress: ''
+                workAddress: ''
             },
             avatarSrc: '',
             albums: []
@@ -35,9 +35,9 @@ class Profile extends Component {
         this.setState({user: {
                 id: 1,
                 name: 'InavBB',
-                adress: "Moscow",
+                address: "Moscow",
                 phone: '+79883121',
-                workAdress: "Somewhere"
+                workAddress: "Somewhere"
             }
         });
         //возможно стоит объеденить с информацией о юзере
@@ -49,7 +49,7 @@ class Profile extends Component {
     render() {
         return (
             <Container className={styles.profile}>
-                <Row className={styles.userAvaratAndInfo}>
+                <Row className={styles.userAvatarAndInfo}>
                     <Col xs="3">
                         <img className={styles.userAvatar} src={this.state.avatarSrc} alt="User avatar"/>
                     </Col>
@@ -63,7 +63,7 @@ class Profile extends Component {
                 <h3>Albums {this.state.albums.length}</h3>
                 <Row className={styles.albumsBar}>
                     {this.state.albums.map(album => {
-                        return <a href=""><img className={styles.albumCover} src="https://picsum.photos/200/150" alt=""/></a>
+                        return <a href="#"><img className={styles.albumCover} src="https://picsum.photos/200/150" alt=""/></a>
                     })}
                 </Row>
             </Container>
