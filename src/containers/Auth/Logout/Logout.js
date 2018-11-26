@@ -1,24 +1,27 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import { logout } from '../../../store/actions'
-import styles from './Logout.module.css'
+import * as actions from '../../../store/actions'
 
-function Logout(props) {
-  return (
-    <div className={styles.logout}>
-      <h1>Logout</h1>
-    </div>
-  )
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    logout: dispatch(logout())
+class Logout extends Component {
+  componentDidMount() {
+    this.props.onLogout(this.props.tokenRefreshTimeoutId)
+  }
+  render() {
+    return <Redirect to="/" />
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return { onLogout: tokenRefreshTimeoutId => dispatch(actions.authLogout(tokenRefreshTimeoutId)) }
+}
+
+const mapStateToProps = state => {
+  return { tokenRefreshTimeoutId: () => state.auth.tokenRefreshTimeoutId }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Logout)

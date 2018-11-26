@@ -12,15 +12,20 @@ import Register from './containers/Auth/Register/Register'
 import Profile from './containers/Profile/Profile'
 import Tasks from './containers/Tasks/Tasks'
 import Wall from './containers/Wall/Wall'
+import * as actions from './store/actions'
 
 class App extends Component {
+  componentDidMount() {
+    this.props.onAutoLogin()
+  }
+
   render() {
     let routes = (
       <Switch>
         <Route path="/auth/login" component={Login} />
         <Route path="/auth/register" component={Register} />
         <Route path="/wall" component={Wall} />
-        <Route path="/" exact component={Register} />
+        <Route path="/" exact component={Login} />
         <Redirect to="/" />
       </Switch>
     )
@@ -52,4 +57,15 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(App))
+const mapDispatchToProps = dispatch => {
+  return {
+    onAutoLogin: () => dispatch(actions.authCheckLoginStatus())
+  }
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(App)
+)
