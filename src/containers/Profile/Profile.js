@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styles from './Profile.module.css'
 import { Container, Row, Col } from 'reactstrap';
 
+
 class UserInfo extends Component {
     render() {
         return (
@@ -57,7 +58,7 @@ class Profile extends Component {
                         <UserInfo user={this.state.user} />
                     </Col>
                     <Col xs="7" className={styles.taskList}>
-                        Здесь должен лежать таскер
+                   
                     </Col>
                 </Row>
                 <h3>Albums {this.state.albums.length}</h3>

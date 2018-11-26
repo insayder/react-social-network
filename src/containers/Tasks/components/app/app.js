@@ -110,7 +110,7 @@ export default class App extends Component {
     return (
       <div className="todo-app">
         <AppHeader toDo={toDoCount} done={doneCount}/>
-
+        
         <div className="search-panel d-flex">
           <SearchPanel
             onSearchChange={this.onSearchChange}/>
@@ -119,7 +119,7 @@ export default class App extends Component {
             filter={filter}
             onFilterChange={this.onFilterChange} />
         </div>
-
+        
         <TodoList
           items={ visibleItems }
           onToggleImportant={this.onToggleImportant}
