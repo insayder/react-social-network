@@ -20,7 +20,7 @@ export default class ItemAddForm extends Component {
     this.setState({ label: '' });
     const cb = this.props.onItemAdded || (() => {});
     cb(label);
-  };
+    };
 
   render() {
     return (
