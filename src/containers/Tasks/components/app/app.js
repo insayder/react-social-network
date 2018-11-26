@@ -105,7 +105,7 @@ export default class App extends Component {
     const { items, filter, search } = this.state;
     const doneCount = items.filter((item) => item.done).length;
     const toDoCount = items.length - doneCount;
-    const visibleItems = this.searchItems(this.filterItems(items, filter), search);
+    const  visibleItems = this.searchItems(this.filterItems(items, filter), search)
 
     return (
       <div className="todo-app">
@@ -119,15 +119,20 @@ export default class App extends Component {
             filter={filter}
             onFilterChange={this.onFilterChange} />
         </div>
+<<<<<<< HEAD
         
         <TodoList
+=======
+      
+        <ItemAddForm
+          onItemAdded={this.onItemAdded} />
+
+          <TodoList
+>>>>>>> 801ec125dc72d4c2262f6cf7a2a765954c8a2799
           items={ visibleItems }
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
           onDelete={this.onDelete} />
-
-        <ItemAddForm
-          onItemAdded={this.onItemAdded} />
       </div>
     );
   };
