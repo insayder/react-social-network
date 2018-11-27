@@ -1,3 +1,36 @@
 .album {
     background-color: antiquewhite;
 }
+.wrap{
+    white-space: nowrap;
+}
+.title{
+    max-width: 330px;
+    border-right: 2px solid #000000;
+    padding: 5px;
+}
+.button {
+    height: 30px;
+    line-height: 0;
+    margin-left: 5px;
+}
+.uploadButton {
+   width: 70%; 
+}
+.mrBottom {
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+.rowPadding {
+    padding: 10px !important;
+}
+.photoCheckbox {
+    position: absolute;
+    margin: 0;
+    top: 10px;
+    left: 230px;
+}
+.modalSize {
+    max-width: 650px;
+    text-align: center;
+}

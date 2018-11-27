@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-
 import Layout from './containers/Layout/Layout'
 
 import Album from './containers/Album/Album'
