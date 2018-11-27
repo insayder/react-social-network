@@ -1,13 +1,9 @@
 import React from 'react'
 
-import styles from './Register.module.css'
+import AuthForm from '../AuthForm/AuthForm'
 
 function Register(props) {
-  return (
-    <div className={styles.register}>
-      <h1>Register</h1>
-    </div>
-  )
+  return <AuthForm type="register" />
 }
 
 export default Register

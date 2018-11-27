@@ -1,0 +1,6 @@
+.authFormField {
+    height: 45px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+    transition: all 0.1s linear;
+}

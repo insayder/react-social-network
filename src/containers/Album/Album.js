@@ -1,13 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import styles from './Album.module.css'
+import AlbumList from './List/AlbumList';
+import AlbumItem from './Item/AlbumItem';
 
-function Album(props) {
+import styles from './Album.module.css';
+
+const Album = props => {
   return (
     <div className={styles.album}>
-      <h1>Album</h1>
+      <Switch>
+        <Route exact path="/album" component={AlbumList} />
+        <Route path="/album/:number" component={AlbumItem} />
+      </Switch>
     </div>
-  )
-}
+  );
+};
 
-export default Album
+export default Album;

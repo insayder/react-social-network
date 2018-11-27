@@ -1,24 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
-import { login } from '../../../store/actions'
-import styles from './Login.module.css'
+import AuthForm from '../AuthForm/AuthForm'
 
 function Login(props) {
-  return (
-    <div className={styles.login}>
-      <h1>Login</h1>
-    </div>
-  )
+  return <AuthForm type="login" />
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    login: dispatch(login())
-  }
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(Login)
+export default Login

@@ -119,16 +119,11 @@ export default class App extends Component {
             filter={filter}
             onFilterChange={this.onFilterChange} />
         </div>
-<<<<<<< HEAD
-        
-        <TodoList
-=======
       
         <ItemAddForm
           onItemAdded={this.onItemAdded} />
 
           <TodoList
->>>>>>> 801ec125dc72d4c2262f6cf7a2a765954c8a2799
           items={ visibleItems }
           onToggleImportant={this.onToggleImportant}
           onToggleDone={this.onToggleDone}
