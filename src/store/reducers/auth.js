@@ -17,7 +17,6 @@ const authSuccess = (state, action) => {
   return updateObject(state, {
     token: action.authData.idToken,
     userId: action.authData.localId,
-    tokenRefreshTimeoutId: null,
     loading: false,
     error: null
   })

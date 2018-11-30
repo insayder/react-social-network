@@ -129,7 +129,7 @@ export const authCheckLoginStatus = () => {
 
     tokenExpirationDate = new Date(tokenExpirationDate)
     if (tokenExpirationDate > new Date()) {
-      dispatch(authSuccess({ userId, token, tokenExpirationDate }))
+      dispatch(authSuccess({ localId: userId, idToken: token }))
       dispatch(setAuthTimeoutChecker((tokenExpirationDate.getTime() - new Date().getTime()) / 1000))
     } else {
       dispatch(authRefreshIdToken())
