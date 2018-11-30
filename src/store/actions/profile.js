@@ -31,3 +31,19 @@ export const profileFetch = (userId, idToken) => {
 export const profileStateReset = () => {
   return { type: actionTypes.PROFILE_STATE_RESET }
 }
+
+export const editorStart = () => {
+  return { type: actionTypes.PROFILE_OPEN_EDITOR }
+}
+
+export const editorClose = () => {
+  return { type: actionTypes.PROFILE_CLOSE_EDITOR }
+}
+
+export const getUserInfo = id => {
+  return { type: actionTypes.USER_INFO }
+}
+
+export const updateUserInfo = updateData => {
+  return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
+}

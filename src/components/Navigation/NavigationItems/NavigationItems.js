@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import styles from './NavigationItems.module.css'
 import NavigationItem from './NavigationItem/NavigationItem'
+import { Nav } from 'reactstrap';
 
 function NavigationItems(props) {
   let items = (
@@ -45,7 +46,7 @@ function NavigationItems(props) {
       </Fragment>
     )
   }
-  return <ul className={styles.navigationItem}>{items}</ul>
+  return <Nav className={styles.navigationItem}>{items}</Nav>
 }
 
 const mapStateToProps = state => {
