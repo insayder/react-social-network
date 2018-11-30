@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-
-import connect from 'react-redux/es/connect/connect'
+import { connect } from 'react-redux'
 
 import { Button, Form, FormGroup, Input } from 'reactstrap'
 import { editorClose, updateUserInfo } from '../../../../store/actions'
@@ -23,16 +22,16 @@ class Redactor extends Component {
     this.handleSave = this.handleSave.bind(this)
   }
   handleFirstNameChange(e) {
-    this.setState({firstName: e.target.value})
+    this.setState({ firstName: e.target.value })
   }
   handleLastNameChange(e) {
-    this.setState({lastName: e.target.value})
+    this.setState({ lastName: e.target.value })
   }
   handlePhoneChange(e) {
-    this.setState({phone: e.target.value})
+    this.setState({ phone: e.target.value })
   }
   handleCityChange(e) {
-    this.setState({city: e.target.value})
+    this.setState({ city: e.target.value })
   }
   handleCancel() {
     this.props.editorClose()
@@ -55,7 +54,7 @@ class Redactor extends Component {
           <Input type="name" onChange={this.handleFirstNameChange} value={this.state.firstName} />
         </FormGroup>
         <FormGroup>
-        <Input type="text" onChange={this.handleLastNameChange} value={this.state.lastName} />
+          <Input type="text" onChange={this.handleLastNameChange} value={this.state.lastName} />
         </FormGroup>
         <FormGroup>
           <Input type="phone" onChange={this.handleCityChange} value={this.state.city} />
@@ -63,10 +62,14 @@ class Redactor extends Component {
         <FormGroup>
           <Input type="text" onChange={this.handlePhoneChange} value={this.state.phone} />
         </FormGroup>
-        <Button color="primary" onClick={this.handleSave}>Сохранить</Button>
-        <Button color="secondary" onClick={this.handleCancel}>Отменить</Button>
+        <Button color="primary" onClick={this.handleSave}>
+          Сохранить
+        </Button>
+        <Button color="secondary" onClick={this.handleCancel}>
+          Отменить
+        </Button>
       </Form>
-    );
+    )
   }
 }
 

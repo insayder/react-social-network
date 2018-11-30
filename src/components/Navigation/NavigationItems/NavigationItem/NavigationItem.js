@@ -1,16 +1,14 @@
 import React from 'react'
-import { NavLink as NLink} from 'react-router-dom'
+import { NavLink as RRNavLink } from 'react-router-dom'
 
+import { NavItem, NavLink } from 'reactstrap'
 import styles from './NavigationItem.module.css'
-import { NavItem, NavLink } from 'reactstrap';
 
 function NavigationItem(props) {
   return (
     <NavItem>
-      <NavLink>
-        <NLink to={props.link} exact={props.exact} activeClassName={styles.active}>
-          {props.children}
-        </NLink>
+      <NavLink tag={RRNavLink} to={props.link} exact={props.exact} activeClassName={styles.active}>
+        {props.children}
       </NavLink>
     </NavItem>
   )

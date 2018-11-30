@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import UserInfo from '../user-info'
 import Redactor from '../redactor'
-
 import { editorStart } from '../../../../store/actions'
-import connect from 'react-redux/es/connect/connect'
 
 class UserInfoWithRedactor extends Component {
   render() {
-    return this.props.editorActive ?
-      <Redactor/> :
-        <UserInfo/>
+    return this.props.editorActive ? <Redactor /> : <UserInfo />
   }
 }
 

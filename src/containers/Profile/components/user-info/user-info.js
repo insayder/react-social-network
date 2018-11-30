@@ -1,43 +1,45 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import connect from 'react-redux/es/connect/connect'
 import { editorStart, profileFetch } from '../../../../store/actions'
 
 class UserInfo extends Component {
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.editorStart = this.editorStart.bind(this)
-    }
-    editorStart() {
-        this.props.editorStart()
-    }
-    componentDidMount() {
-      this.props.profileFetch('LtzEkXcHetTl05cRmP68xVGtzKh1', this.props.token)
-    }
-    render() {
-        return (
-            <div>
-                <p>{this.props.firstName}  {this.props.lastName}</p>
-                <p>{this.props.city}</p>
-                <p>{this.props.phone}</p>
-                <p>{this.props.job}</p>
-                <button onClick={this.editorStart}>Редактировать</button>
-            </div>
-        )
-    }
+    this.editorStart = this.editorStart.bind(this)
+  }
+  editorStart() {
+    this.props.editorStart()
+  }
+  componentDidMount() {
+    this.props.profileFetch('LtzEkXcHetTl05cRmP68xVGtzKh1', this.props.token)
+  }
+  render() {
+    return (
+      <div>
+        <p>
+          {this.props.firstName} {this.props.lastName}
+        </p>
+        <p>{this.props.city}</p>
+        <p>{this.props.phone}</p>
+        <p>{this.props.job}</p>
+        <button onClick={this.editorStart}>Редактировать</button>
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = state => {
-    return {
-      editorActive: state.profile.editorActive,
-      firstName: state.profile.firstName,
-      lastName: state.profile.lastName,
-      city: state.profile.city,
-      phone: state.profile.phone,
-      token: state.auth.token,
-      userId: state.auth.userId
-    }
+  return {
+    editorActive: state.profile.editorActive,
+    firstName: state.profile.firstName,
+    lastName: state.profile.lastName,
+    city: state.profile.city,
+    phone: state.profile.phone,
+    token: state.auth.token,
+    userId: state.auth.userId
+  }
 }
 
 const mapDispatchToProps = dispatch => {
