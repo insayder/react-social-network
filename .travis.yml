@@ -18,3 +18,4 @@ after_success:
 deploy:
   provider: firebase
   token: $FIREBASE_AUTH_TOKEN
+  skip_cleanup: true
