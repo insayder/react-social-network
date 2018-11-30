@@ -1,16 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Button, Input } from 'reactstrap'
-//import InlineEdit from 'react-inline-editing'
 import { AlbumTitle, EditAlbumTitle } from './AlbumNavTitle'
 import { changeNameAlbum, removeAlbumPhoto } from '../../../../store/actions'
 
 import styles from './../../Album.module.css'
 
 class NavAlbum extends React.Component {
-  constructor(props) {
-    super(props)
-  }
   state = {
     editTitle: false
   }

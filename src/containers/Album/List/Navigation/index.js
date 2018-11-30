@@ -7,9 +7,6 @@ import { InitialAddAlbum, ActiveAddAlbum } from './AddAlbum'
 import { removeAlbum } from '../../../../store/actions'
 
 class AlbumsListNav extends React.Component {
-  constructor(props) {
-    super(props)
-  }
   state = {
     addAlbum: false
   }

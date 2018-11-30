@@ -225,6 +225,7 @@ const deleteFromRemovableAlbumPhoto = (state, action) => {
     if (idPhoto !== +action.payload.idPhoto) {
       return idPhoto
     }
+    return null
   })
   return {
     ...state,
@@ -239,6 +240,7 @@ const removeSelectedAlbumPhoto = (state, action) => {
         if (!_.includes(state.removableAlbumPhoto.idPhoto, photo.id)) {
           return true
         }
+        return null
       })
       album.photo = newIdPhoto
     }
@@ -262,6 +264,7 @@ const deleteFromRemovableAlbum = (state, action) => {
     if (album !== +action.payload.idAlbum) {
       return album
     }
+    return null
   })
   return { ...state, removableAlbum: { idAlbum: _.remove(newRemovableAlbum, undefined) } }
 }
@@ -271,6 +274,7 @@ const removeSelectedAlbums = (state, action) => {
     if (!_.includes(state.removableAlbum.idAlbum, album.id)) {
       return album
     }
+    return null
   })
   return { ...state, dataAlbums: _.remove(newDataAlbum, undefined) }
 }
