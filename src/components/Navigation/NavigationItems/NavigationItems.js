@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import styles from './NavigationItems.module.css'
 import NavigationItem from './NavigationItem/NavigationItem'
+import { Nav } from 'reactstrap'
 
 function NavigationItems(props) {
   let items = (
@@ -30,9 +31,7 @@ function NavigationItems(props) {
         <NavigationItem link="/profile" exact>
           Profile
         </NavigationItem>
-        <NavigationItem link="/album" exact>
-          Album
-        </NavigationItem>
+        <NavigationItem link="/albums">Albums</NavigationItem>
         <NavigationItem link="/tasks" exact>
           Tasks
         </NavigationItem>
@@ -45,7 +44,7 @@ function NavigationItems(props) {
       </Fragment>
     )
   }
-  return <ul className={styles.navigationItem}>{items}</ul>
+  return <Nav className={styles.navigationItem}>{items}</Nav>
 }
 
 const mapStateToProps = state => {
@@ -54,4 +53,9 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(NavigationItems)
+export default connect(
+  mapStateToProps,
+  null,
+  null,
+  { pure: false }
+)(NavigationItems)

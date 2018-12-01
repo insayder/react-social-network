@@ -1,5 +1,4 @@
 import * as actionTypes from '../actions/actionTypes'
-import {} from '../actions'
 import { updateObject } from '../../shared/utility'
 
 const initialState = {
@@ -18,7 +17,6 @@ const authSuccess = (state, action) => {
   return updateObject(state, {
     token: action.authData.idToken,
     userId: action.authData.localId,
-    tokenRefreshTimeoutId: null,
     loading: false,
     error: null
   })
@@ -28,7 +26,7 @@ const authFail = (state, action) => {
   return updateObject(state, { error: action.error, loading: false })
 }
 
-const authLogout = (state, action) => {
+const authReset = (state, action) => {
   return updateObject(state, {
     token: null,
     userId: null,
@@ -50,8 +48,8 @@ const reducer = (state = initialState, action) => {
       return authSuccess(state, action)
     case actionTypes.AUTH_FAIL:
       return authFail(state, action)
-    case actionTypes.AUTH_LOGOUT:
-      return authLogout(state, action)
+    case actionTypes.AUTH_STATE_RESET:
+      return authReset(state, action)
     case actionTypes.AUTH_SET_REFRESH_TIMEOUT_ID:
       return authSetRefreshTimeoutId(state, action)
     default:

@@ -32,7 +32,7 @@ class App extends Component {
     if (this.props.isAuthenticated) {
       routes = (
         <Switch>
-          <Route path="/album" component={Album} />
+          <Route path="/albums" component={Album} />
           <Route path="/auth/logout" component={Logout} />
           <Route path="/tasks" component={Tasks} />
           <Route path="/wall" component={Wall} />

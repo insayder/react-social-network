@@ -1,75 +1,65 @@
 import React, { Component } from 'react'
-import styles from './Profile.module.css'
+
+import Album from '../Album/Album'
 import { Container, Row, Col } from 'reactstrap';
-
-
-class UserInfo extends Component {
-    render() {
-        return (
-            <div>
-                <p>{this.props.user.name}</p>
-                <p>{this.props.user.address}</p>
-                <p>{this.props.user.phone}</p>
-                <p>{this.props.user.workAddress}</p>
-            </div>
-        )
-    }
-}
+import UserInfoWithRedactor from './components/user-info-with-redactor'
+import styles from './Profile.module.css'
+import { Route, Switch } from 'react-router-dom'
 
 class Profile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: {
-                id: '',
-                name: '',
-                address: '',
-                phone: '',
-                workAddress: ''
-            },
-            avatarSrc: '',
-            albums: []
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {
+        id: '',
+        name: '',
+        address: '',
+        phone: '',
+        job: '',
+        avatarUrl: ''
+      },
+      albums: [],
+      tasks: [],
+      editorActive: false
     }
-    componentDidMount() {
-        //fetch user info
-        this.setState({user: {
-                id: 1,
-                name: 'InavBB',
-                address: "Moscow",
-                phone: '+79883121',
-                workAddress: "Somewhere"
-            }
-        });
-        //возможно стоит объеденить с информацией о юзере
-        this.setState({ avatarSrc: 'https://picsum.photos/200/200'});
+  }
+  componentDidMount() {
+    //fetch user info
+    this.setState({user: {
+        id: 1,
+        name: 'InavBB',
+        address: "Moscow",
+        phone: '+79883121',
+        job: "Somewhere",
+        avatarUrl: 'https://picsum.photos/200/200'
+      }
+    });
 
-        this.setState({albums:["newHero", "tripToMountains", "partyForEveryBody"]});
-    }
+    this.setState({albums:["newHero", "tripToMountains", "partyForEveryBody"]});
+  }
 
-    render() {
-        return (
-            <Container className={styles.profile}>
-                <Row className={styles.userAvatarAndInfo}>
-                    <Col xs="3">
-                        <img className={styles.userAvatar} src={this.state.avatarSrc} alt="User avatar"/>
-                    </Col>
-                    <Col xs="2" className={styles.userInfo}>
-                        <UserInfo user={this.state.user} />
-                    </Col>
-                    <Col xs="7" className={styles.taskList}>
-                   
-                    </Col>
-                </Row>
-                <h3>Albums {this.state.albums.length}</h3>
-                <Row className={styles.albumsBar}>
-                    {this.state.albums.map(album => {
-                        return <a href="#"><img className={styles.albumCover} src="https://picsum.photos/200/150" alt=""/></a>
-                    })}
-                </Row>
-            </Container>
-        )
-    }
+  render() {
+    return (
+      <Container className={styles.profile}>
+        <Row className={styles.userAvatarAndInfo}>
+          <Col xs="3">
+            <img className={styles.userAvatar} src={this.state.user.avatarUrl} alt="User avatar"/>
+          </Col>
+          <Col xs="2" className={styles.userInfo}>
+            <UserInfoWithRedactor/>
+          </Col>
+          <Col xs="7" className={styles.taskList}>
+          </Col>
+        </Row>
+        <h3>Albums {this.state.albums.length}</h3>
+        <Row className={styles.albumsBar}>
+          <Switch>
+            <Route path="/album" component={Album} />
+          </Switch>
+        </Row>
+      </Container>
+    )
+  }
 }
 
 export default Profile

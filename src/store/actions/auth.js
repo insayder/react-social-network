@@ -1,6 +1,7 @@
 import { axiosAuth, axiosRefreshToken } from '../../axios/auth'
 import * as actionTypes from './actionTypes'
 import { API_KEY } from '../../constants/auth'
+import { profileFetch, profileStateReset } from './profile'
 
 export const authStart = (email, password) => {
   return { type: actionTypes.AUTH_START }
@@ -19,12 +20,19 @@ export const authFail = error => {
 }
 
 export const authLogout = tokenRefreshTimeoutId => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('tokenExpirationDate')
-  localStorage.removeItem('userId')
-  localStorage.removeItem('refreshToken')
-  clearTimeout(tokenRefreshTimeoutId)
-  return { type: actionTypes.AUTH_LOGOUT }
+  return dispatch => {
+    dispatch(authStateReset())
+    dispatch(profileStateReset())
+    localStorage.removeItem('token')
+    localStorage.removeItem('tokenExpirationDate')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('refreshToken')
+    clearTimeout(tokenRefreshTimeoutId)
+  }
+}
+
+export const authStateReset = () => {
+  return { type: actionTypes.AUTH_STATE_RESET }
 }
 
 export const authSetRefreshTimeoutId = tokenRefreshTimeoutId => {
@@ -59,8 +67,7 @@ export const authRefreshIdToken = () => {
             localId: response.data.user_id,
             expiresIn: response.data.expires_in
           }
-          dispatch(updateAuthData(authData, remember))
-          dispatch(setAuthTimeoutChecker(response.data.expires_in))
+          dispatch(processAuthResponse(authData, remember))
         })
         .catch(error => {
           dispatch(authLogout())
@@ -93,12 +100,19 @@ export const auth = (email, password, remember, isLogin) => {
     axiosAuth
       .post(url, authData)
       .then(response => {
-        dispatch(updateAuthData(response.data, remember))
-        dispatch(setAuthTimeoutChecker(response.data.expiresIn))
+        dispatch(processAuthResponse(response.data, remember))
       })
       .catch(error => {
         dispatch(authFail(error))
       })
+  }
+}
+
+const processAuthResponse = (responseData, remember) => {
+  return dispatch => {
+    dispatch(updateAuthData(responseData, remember))
+    dispatch(setAuthTimeoutChecker(responseData.expiresIn))
+    dispatch(profileFetch(responseData.localId, responseData.idToken))
   }
 }
 
@@ -115,8 +129,9 @@ export const authCheckLoginStatus = () => {
 
     tokenExpirationDate = new Date(tokenExpirationDate)
     if (tokenExpirationDate > new Date()) {
-      dispatch(authSuccess({ userId, token, tokenExpirationDate }))
+      dispatch(authSuccess({ localId: userId, idToken: token }))
       dispatch(setAuthTimeoutChecker((tokenExpirationDate.getTime() - new Date().getTime()) / 1000))
+      dispatch(profileFetch(userId, token))
     } else {
       dispatch(authRefreshIdToken())
     }
