@@ -3,11 +3,10 @@ import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Layout from './containers/Layout/Layout'
-
+import PrivateRoute from './components/hoc/PrivateRoute/PrivateRoute'
 import Album from './containers/Album/Album'
-import Login from './containers/Auth/Login/Login'
+import Auth from './containers/Auth/Auth'
 import Logout from './containers/Auth/Logout/Logout'
-import Register from './containers/Auth/Register/Register'
 import Profile from './containers/Profile/Profile'
 import Tasks from './containers/Tasks/Tasks'
 import Wall from './containers/Wall/Wall'
@@ -19,29 +18,19 @@ class App extends Component {
   }
 
   render() {
-    let routes = (
+    const routes = (
       <Switch>
-        <Route path="/auth/login" component={Login} />
-        <Route path="/auth/register" component={Register} />
-        <Route path="/wall" component={Wall} />
-        <Route path="/" exact component={Login} />
+        <PrivateRoute path="/albums" component={Album} />
+        <PrivateRoute path="/wall" component={Wall} />
+        <PrivateRoute path="/profile" component={Profile} />
+        <PrivateRoute path="/tasks" component={Tasks} />
+        <PrivateRoute path="/" exact component={Profile} />
+        <Route path="/auth/login" render={props => <Auth {...props} type="login" />} />
+        <Route path="/auth/register" render={props => <Auth {...props} type="register" />} />
+        <Route path="/auth/logout" component={Logout} />
         <Redirect to="/" />
       </Switch>
     )
-
-    if (this.props.isAuthenticated) {
-      routes = (
-        <Switch>
-          <Route path="/albums" component={Album} />
-          <Route path="/auth/logout" component={Logout} />
-          <Route path="/tasks" component={Tasks} />
-          <Route path="/wall" component={Wall} />
-          <Route path="/" exact component={Profile} />
-          <Redirect to="/" />
-        </Switch>
-      )
-    }
-
     return (
       <div className="App">
         <Layout>{routes}</Layout>
@@ -52,13 +41,15 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.auth.token !== null
+    isAuthenticated: state.auth.token !== null,
+    tokenRefreshTimeoutId: state.auth.tokenRefreshTimeoutId
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAutoLogin: () => dispatch(actions.authCheckLoginStatus())
+    onAutoLogin: () => dispatch(actions.authCheckLoginStatus()),
+    onLogout: tokenRefreshTimeoutId => dispatch(actions.authLogout(tokenRefreshTimeoutId))
   }
 }
 

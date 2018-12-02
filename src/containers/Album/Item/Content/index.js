@@ -10,12 +10,18 @@ class contentAlbum extends React.Component {
     this.props.clearRemovableAlbumPhoto()
   }
   render() {
-    let albumPhoto = this.props.albums.find(album => album.id === +this.props.idAlbum)
+    let albumPhoto = this.props.albums.find(album => {
+      if (album !== null && album.id === this.props.idAlbum) {
+        return true
+      }
+    })
     return (
       <Row width="100%" className={'justify-content-start align-items-center'}>
-        {albumPhoto.photo.map(photo => (
-          <Photo key={photo.id} idAlbum={this.props.idAlbum} dataPhoto={photo} />
-        ))}
+        {albumPhoto.photo !== null && albumPhoto.photo !== undefined
+          ? albumPhoto.photo.map(photo => {
+              return <Photo key={photo.url} idAlbum={this.props.idAlbum} dataPhoto={photo} />
+            })
+          : ''}
       </Row>
     )
   }

@@ -6,7 +6,8 @@ const initialState = {
   userId: null,
   tokenRefreshTimeoutId: null,
   error: null,
-  loading: false
+  loading: false,
+  redirectToReferrer: false
 }
 
 const authStart = (state, action) => {
@@ -18,7 +19,8 @@ const authSuccess = (state, action) => {
     token: action.authData.idToken,
     userId: action.authData.localId,
     loading: false,
-    error: null
+    error: null,
+    redirectToReferrer: true
   })
 }
 
@@ -32,7 +34,8 @@ const authReset = (state, action) => {
     userId: null,
     error: null,
     loading: false,
-    tokenRefreshTimeoutId: null
+    tokenRefreshTimeoutId: null,
+    redirectToReferrer: false
   })
 }
 

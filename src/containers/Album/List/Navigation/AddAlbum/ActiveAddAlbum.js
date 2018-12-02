@@ -16,14 +16,18 @@ class ActiveAddAlbumClass extends React.Component {
   }
   handlerSaveButton = () => {
     let arrayOfId = this.props.albums.map(album => {
-      return album.id
+      return album !== null ? album.id : null
     })
-    let id = _.max(arrayOfId) + 1
+    //let id = _.max(arrayOfId) + 1
     let dataNewAlbum = {
-      userId: 1,
-      id: id,
-      title: this.refAlbumName.value,
-      photo: []
+      idUser: this.props.idUser,
+      authToken: this.props.authToken,
+      newAlbum: {
+        userId: this.props.idUser,
+        //id: id,
+        title: this.refAlbumName.value,
+        photo: []
+      }
     }
     this.props.allowAdd()
     this.props.addAlbum(dataNewAlbum)
@@ -47,7 +51,9 @@ class ActiveAddAlbumClass extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    albums: state.albums.dataAlbums
+    albums: state.albums.dataAlbums,
+    idUser: state.auth.userId,
+    authToken: state.auth.token
   }
 }
 

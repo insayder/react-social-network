@@ -1,16 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import * as actions from '../../../store/actions'
 
-class Logout extends Component {
-  componentDidMount() {
-    this.props.onLogout(this.props.tokenRefreshTimeoutId)
-  }
-  render() {
-    return <Redirect to="/" />
-  }
+function Logout(props) {
+  props.onLogout(props.tokenRefreshTimeoutId)
+  return <Redirect to="/" />
 }
 
 const mapDispatchToProps = dispatch => {

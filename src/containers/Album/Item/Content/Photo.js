@@ -15,14 +15,14 @@ const Photo = props => {
   }
   const handlerCheckboxChange = e => {
     e.target.checked
-      ? props.selectPhoto({ idAlbum: +props.idAlbum, idPhoto: props.dataPhoto.id })
-      : props.resetSelectedPhoto({ idAlbum: +props.idAlbum, idPhoto: props.dataPhoto.id })
+      ? props.selectPhoto({ idAlbum: props.idAlbum, idPhoto: props.dataPhoto.id })
+      : props.resetSelectedPhoto({ idAlbum: props.idAlbum, idPhoto: props.dataPhoto.id })
   }
   return (
     <Col md={3} className={`${styles.mrBottom}`}>
       <Card>
         <Input className={styles.photoCheckbox} type="checkbox" onChange={handlerCheckboxChange} />
-        <CardImg onClick={handlerPhotoClick} width="250" height="150" src={props.dataPhoto.thumbnailUrl} />
+        <CardImg onClick={handlerPhotoClick} width="250" height="150" src={props.dataPhoto.url} />
       </Card>
       <ModalPhoto dataPhoto={props.dataPhoto} />
     </Col>

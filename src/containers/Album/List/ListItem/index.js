@@ -14,23 +14,22 @@ const listItem = props => {
       ? props.addToRemovable({ idAlbum: props.dataAlbum.id })
       : props.deleteFromRemovable({ idAlbum: props.dataAlbum.id })
   }
+  const checkExistSrcPhoto = () => {
+    if (props.dataAlbum.photo !== undefined && props.dataAlbum.photo !== null) {
+      if (props.dataAlbum.photo.length > 0) {
+        return props.dataAlbum.photo[helpers.randomNumber(0, props.dataAlbum.photo.length - 1)].thumbnailUrl
+      } else return NO_PHOTO
+    } else return NO_PHOTO
+  }
   return (
     <Col md={4} width="250" className={`text-center ${styles.mrBottom}`}>
       <Card>
-        <Link width="250" to={`/album/${props.dataAlbum.id}`}>
+        <Link width="250" to={`/albums/${props.dataAlbum.id}`}>
           <CardTitle>{props.dataAlbum.title}</CardTitle>
         </Link>
         <Input className={styles.albumCheckbox} type="checkbox" onChange={handlerCheckboxChange} />
-        <Link width="250" to={`/album/${props.dataAlbum.id}`}>
-          <CardImg
-            width="250"
-            height="150"
-            src={
-              props.dataAlbum.photo.length > 0
-                ? props.dataAlbum.photo[helpers.randomNumber(0, props.dataAlbum.photo.length - 1)].thumbnailUrl
-                : NO_PHOTO
-            }
-          />
+        <Link width="250" to={`/albums/${props.dataAlbum.id}`}>
+          <CardImg width="250" height="150" src={checkExistSrcPhoto()} />
         </Link>
       </Card>
     </Col>
