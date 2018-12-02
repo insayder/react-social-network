@@ -1,15 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect, withRouter } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import AuthForm from './AuthForm/AuthForm'
 
-class Auth extends Component {
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
-    if (this.props.redirectToReferrer) return <Redirect to={from} />
-    return <AuthForm type={this.props.type} />
-  }
+function Auth(props) {
+  const { from } = props.location.state || { from: { pathname: '/' } }
+  if (props.redirectToReferrer) return <Redirect to={from} />
+  return <AuthForm type={props.type} />
 }
 
 const mapStateToProps = state => {
@@ -19,4 +17,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Auth))
+export default connect(mapStateToProps)(Auth)

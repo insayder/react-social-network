@@ -25,8 +25,8 @@ class App extends Component {
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/tasks" component={Tasks} />
         <PrivateRoute path="/" exact component={Profile} />
-        <Route path="/auth/login" render={props => <Auth type="login" />} />
-        <Route path="/auth/register" render={props => <Auth type="register" />} />
+        <Route path="/auth/login" render={props => <Auth {...props} type="login" />} />
+        <Route path="/auth/register" render={props => <Auth {...props} type="register" />} />
         <Route path="/auth/logout" component={Logout} />
         <Redirect to="/" />
       </Switch>
