@@ -3,6 +3,7 @@ import md5 from 'js-md5'
 import * as actionTypes from './actionTypes'
 import { axiosProfile } from '../../axios/profile'
 
+import firebase from 'firebase'
 export const profileFetchingStart = () => {
   return { type: actionTypes.PROFILE_FETCHING_START }
 }
@@ -29,6 +30,7 @@ export const profileViewedUserFetchingFail = error => {
 
 export const profileFetch = (userId, idToken, isSelfProfile = true) => {
   return dispatch => {
+<<<<<<< HEAD
     if (isSelfProfile) {
       dispatch(profileFetchingStart())
     } else {
@@ -50,6 +52,14 @@ export const profileFetch = (userId, idToken, isSelfProfile = true) => {
         } else {
           dispatch(profileViewedUserFetchingFail(error))
         }
+=======
+    dispatch(profileFetchingStart())
+    firebase
+      .database()
+      .ref('profiles/' + userId)
+      .on('value', function(snapshot) {
+        dispatch(updateUserInfo(snapshot.val()))
+>>>>>>> edit works
       })
   }
 }
@@ -119,8 +129,18 @@ export const editorClose = () => {
   return { type: actionTypes.PROFILE_CLOSE_EDITOR }
 }
 
-export const getUserInfo = id => {
-  return { type: actionTypes.USER_INFO }
+export const changeUserInfo = (userId, updateData) => {
+  return dispatch => {
+    firebase
+      .database()
+      .ref('profiles/' + userId)
+      .update({
+        firstName: updateData.firstName,
+        lastName: updateData.lastName,
+        city: updateData.city,
+        phone: updateData.phone
+      })
+  }
 }
 
 export const updateUserInfo = updateData => {

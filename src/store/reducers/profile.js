@@ -45,19 +45,16 @@ const editorClose = (state, action) => {
 }
 
 const updateUserInfo = (state, action) => {
-  return updateObject(state, action.updatedData)
-}
-
-const profileUpdatingStart = (state, action) => {
-  return updateObject(state, { loading: true })
-}
-
-const profileUpdatingSucceed = (state, action) => {
-  return updateObject(state, { ...action.profileData, loading: false })
-}
-
-const profileUpdatingFail = (state, action) => {
-  return updateObject(state, { error: action.error })
+  if (action.updateData == null) {
+    return state
+  }
+  return updateObject(state, {
+    firstName: action.updateData.firstName,
+    lastName: action.updateData.lastName,
+    city: action.updateData.city,
+    phone: action.updateData.phone,
+    photoURL: state.photoURL
+  })
 }
 
 const profileViewedUserFetchingStart = (state, action) => {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { editorStart, profileFetch } from '../../../../store/actions'
 
+import firebase from 'firebase'
 class UserInfo extends Component {
   constructor(props) {
     super(props)
