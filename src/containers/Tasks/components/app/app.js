@@ -26,22 +26,6 @@ class App extends Component {
     this.props.actions.createTask(item)
   };
 
-  toggleProperty = (id, propName) => {
-    this.props.actions.toggleTask(id, propName)
-  };
-
-  onToggleDone = (id) => {
-    this.toggleProperty(id, 'done');
-  };
-
-  onToggleImportant = (id) => {
-    this.toggleProperty(id, 'important')
-  };
-
-  onDelete = (id) => {
-    this.props.actions.deleteTask(id)
-  };
-
   onFilterChange = (filter) => {
     this.setState({ filter });
   };
@@ -86,8 +70,6 @@ class App extends Component {
     const toDoCount = items.length - doneCount;
     const  visibleItems = this.searchItems(this.filterItems(items, filter), search)
 
-    console.log(this.props)
-
     return (
       <div className="todo-app">
         <AppHeader toDo={toDoCount} done={doneCount}/>
@@ -105,10 +87,7 @@ class App extends Component {
           onItemAdded={this.onItemAdded} />
 
           <TodoList
-          items={ visibleItems }
-          onToggleImportant={this.onToggleImportant}
-          onToggleDone={this.onToggleDone}
-          onDelete={this.onDelete} />
+          items={ visibleItems } />
       </div>
     );
   };
