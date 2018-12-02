@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { editorStart, profileFetch } from '../../../../store/actions'
-
+import firebase from 'firebase'
 class UserInfo extends Component {
   constructor(props) {
     super(props)
@@ -13,7 +13,7 @@ class UserInfo extends Component {
     this.props.editorStart()
   }
   componentDidMount() {
-    this.props.profileFetch('LtzEkXcHetTl05cRmP68xVGtzKh1', this.props.token)
+    //this.props.profileFetch(firebase.auth().currentUser.uid)
   }
   render() {
     return (
@@ -44,7 +44,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    profileFetch: (userId, token) => dispatch(profileFetch(userId, token)),
+    profileFetch: userId => dispatch(profileFetch(userId)),
     editorStart: () => dispatch(editorStart())
   }
 }
