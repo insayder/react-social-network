@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import AppHeader from '../app-header';
 import TodoList from '../todo-list';
 import SearchPanel from '../search-panel';
 import ItemStatusFilter from '../item-status-filter';
 import ItemAddForm from '../item-add-form';
+import * as actions from '../../../../store/actions/task'
 
 import './app.css';
 
 
-export default class App extends Component {
+class App extends Component {
 
   maxId = 0;
 
@@ -20,48 +22,8 @@ export default class App extends Component {
   };
 
   onItemAdded = (label) => {
-    this.setState((state) => {
-      const item = this.createItem(label);
-      return { items: [...state.items, item] };
-    })
-  };
-
-  toggleProperty = (arr, id, propName) => {
-    const idx = arr.findIndex((item) => item.id === id);
-    const oldItem = arr[idx];
-    const value = !oldItem[propName];
-
-    const item = { ...arr[idx], [propName]: value } ;
-    return [
-      ...arr.slice(0, idx),
-      item,
-      ...arr.slice(idx + 1)
-    ];
-  };
-
-  onToggleDone = (id) => {
-    this.setState((state) => {
-      const items = this.toggleProperty(state.items, id, 'done');
-      return { items };
-    });
-  };
-
-  onToggleImportant = (id) => {
-    this.setState((state) => {
-      const items = this.toggleProperty(state.items, id, 'important');
-      return { items };
-    });
-  };
-
-  onDelete = (id) => {
-    this.setState((state) => {
-      const idx = state.items.findIndex((item) => item.id === id);
-      const items = [
-        ...state.items.slice(0, idx),
-        ...state.items.slice(idx + 1)
-      ];
-      return { items };
-    });
+    const item = this.createItem(label)
+    this.props.actions.createTask(item)
   };
 
   onFilterChange = (filter) => {
@@ -102,7 +64,8 @@ export default class App extends Component {
   }
 
   render() {
-    const { items, filter, search } = this.state;
+    const {items} = this.props.task
+    const { filter, search } = this.state;
     const doneCount = items.filter((item) => item.done).length;
     const toDoCount = items.length - doneCount;
     const  visibleItems = this.searchItems(this.filterItems(items, filter), search)
@@ -124,11 +87,20 @@ export default class App extends Component {
           onItemAdded={this.onItemAdded} />
 
           <TodoList
-          items={ visibleItems }
-          onToggleImportant={this.onToggleImportant}
-          onToggleDone={this.onToggleDone}
-          onDelete={this.onDelete} />
+          items={ visibleItems } />
       </div>
     );
   };
 }
+
+
+const mapStateToProps = state => {
+  return state
+}
+
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators({ ...actions }, dispatch)})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

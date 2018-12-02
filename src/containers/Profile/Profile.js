@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-
+import { connect } from 'react-redux';
 import Album from '../Album/Album'
 import { Container, Row, Col } from 'reactstrap';
 import UserInfoWithRedactor from './components/user-info-with-redactor'
 import styles from './Profile.module.css'
 import { Route, Switch } from 'react-router-dom'
+import TodoList from '../../containers/Tasks/components/todo-list';
 
 class Profile extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class Profile extends Component {
             <UserInfoWithRedactor/>
           </Col>
           <Col xs="7" className={styles.taskList}>
+            <TodoList items={ this.props.task.items } />
           </Col>
         </Row>
         <h3>Albums {this.state.albums.length}</h3>
@@ -62,4 +64,14 @@ class Profile extends Component {
   }
 }
 
-export default Profile
+const mapStateToProps = state => {
+  return {task: state.task};
+}
+
+const mapDispatchToProps = dispatch => ({})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile)
+
