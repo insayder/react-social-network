@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import AppHeader from '../app-header';
 import TodoList from '../todo-list';
 import SearchPanel from '../search-panel';
 import ItemStatusFilter from '../item-status-filter';
 import ItemAddForm from '../item-add-form';
+import * as actions from '../../../../store/actions/task'
 
 import './app.css';
 
 
-export default class App extends Component {
+class App extends Component {
 
   maxId = 0;
 
@@ -20,48 +22,24 @@ export default class App extends Component {
   };
 
   onItemAdded = (label) => {
-    this.setState((state) => {
-      const item = this.createItem(label);
-      return { items: [...state.items, item] };
-    })
+    const item = this.createItem(label)
+    this.props.actions.createTask(item)
   };
 
-  toggleProperty = (arr, id, propName) => {
-    const idx = arr.findIndex((item) => item.id === id);
-    const oldItem = arr[idx];
-    const value = !oldItem[propName];
-
-    const item = { ...arr[idx], [propName]: value } ;
-    return [
-      ...arr.slice(0, idx),
-      item,
-      ...arr.slice(idx + 1)
-    ];
+  toggleProperty = (id, propName) => {
+    this.props.actions.toggleTask(id, propName)
   };
 
   onToggleDone = (id) => {
-    this.setState((state) => {
-      const items = this.toggleProperty(state.items, id, 'done');
-      return { items };
-    });
+    this.toggleProperty(id, 'done');
   };
 
   onToggleImportant = (id) => {
-    this.setState((state) => {
-      const items = this.toggleProperty(state.items, id, 'important');
-      return { items };
-    });
+    this.toggleProperty(id, 'important')
   };
 
   onDelete = (id) => {
-    this.setState((state) => {
-      const idx = state.items.findIndex((item) => item.id === id);
-      const items = [
-        ...state.items.slice(0, idx),
-        ...state.items.slice(idx + 1)
-      ];
-      return { items };
-    });
+    this.props.actions.deleteTask(id)
   };
 
   onFilterChange = (filter) => {
@@ -102,10 +80,13 @@ export default class App extends Component {
   }
 
   render() {
-    const { items, filter, search } = this.state;
+    const {items} = this.props.task
+    const { filter, search } = this.state;
     const doneCount = items.filter((item) => item.done).length;
     const toDoCount = items.length - doneCount;
     const  visibleItems = this.searchItems(this.filterItems(items, filter), search)
+
+    console.log(this.props)
 
     return (
       <div className="todo-app">
@@ -132,3 +113,15 @@ export default class App extends Component {
     );
   };
 }
+
+
+const mapStateToProps = state => {
+  return state
+}
+
+const mapDispatchToProps = dispatch => ({actions: bindActionCreators({ ...actions }, dispatch)})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
