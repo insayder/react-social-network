@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { Button, Form, FormGroup, Input } from 'reactstrap'
-import { editorClose, changeUserInfo } from '../../../../store/actions'
-
-import firebase from 'firebase'
+import { editorClose, updateUserInfo } from '../../../../store/actions'
 
 class Redactor extends Component {
   constructor(props) {
@@ -45,9 +43,7 @@ class Redactor extends Component {
       city: this.state.city,
       phone: this.state.phone
     }
-    let userId = firebase.auth().currentUser.uid
-    this.props.changeUserInfo(userId, updateData)
-
+    this.props.updateUserInfo(updateData)
     this.props.editorClose()
   }
 
@@ -89,7 +85,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeUserInfo: (userId, updateData) => dispatch(changeUserInfo(userId, updateData)),
+    updateUserInfo: updateData => dispatch(updateUserInfo(updateData)),
     editorClose: () => dispatch(editorClose())
   }
 }

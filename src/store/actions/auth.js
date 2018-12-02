@@ -2,7 +2,6 @@ import { axiosAuth, axiosRefreshToken } from '../../axios/auth'
 import * as actionTypes from './actionTypes'
 import { API_KEY } from '../../constants/auth'
 import { profileFetch, profileStateReset } from './profile'
-import firebase from 'firebase'
 
 export const authStart = (email, password) => {
   return { type: actionTypes.AUTH_START }
@@ -96,15 +95,14 @@ export const updateAuthData = (authData, remember = null) => {
 export const auth = (email, password, remember, isLogin) => {
   return dispatch => {
     dispatch(authStart())
-    console.log(firebase)
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
+    const authData = { email, password, returnSecureToken: true }
+    const url = isLogin ? `/verifyPassword?key=${API_KEY}` : `/signupNewUser?key=${API_KEY}`
+    axiosAuth
+      .post(url, authData)
       .then(response => {
-        console.log(response)
-        dispatch(processAuthResponse(response, remember))
+        dispatch(processAuthResponse(response.data, remember))
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(authFail(error))
       })
   }

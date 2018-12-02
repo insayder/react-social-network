@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes'
-import firebase from 'firebase'
+import { axiosProfile } from '../../axios/profile'
 
 export const profileFetchingStart = () => {
   return { type: actionTypes.PROFILE_FETCHING_START }
@@ -13,15 +13,17 @@ export const profileFetchingFail = error => {
   return { type: actionTypes.PROFILE_FETCHING_FAIL, error: error }
 }
 
-export const profileFetch = userId => {
+export const profileFetch = (userId, idToken) => {
   return dispatch => {
     dispatch(profileFetchingStart())
-
-    firebase
-      .database()
-      .ref('profiles/' + userId)
-      .on('value', function(snapshot) {
-        dispatch(updateUserInfo(snapshot.val()))
+    const url = `/${userId}.json?auth=${idToken}`
+    axiosProfile
+      .get(url)
+      .then(response => {
+        dispatch(profileFetchingSucceed(response.data))
+      })
+      .catch(error => {
+        dispatch(profileFetchingFail(error))
       })
   }
 }
@@ -37,20 +39,11 @@ export const editorStart = () => {
 export const editorClose = () => {
   return { type: actionTypes.PROFILE_CLOSE_EDITOR }
 }
-export const updateUserInfo = updateData => {
-  return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
+
+export const getUserInfo = id => {
+  return { type: actionTypes.USER_INFO }
 }
 
-export const changeUserInfo = (userId, updateData) => {
-  return dispatch => {
-    let data = firebase
-      .database()
-      .ref('profiles/' + userId)
-      .update({
-        firstName: updateData.firstName,
-        lastName: updateData.lastName,
-        city: updateData.city,
-        phone: updateData.phone
-      })
-  }
+export const updateUserInfo = updateData => {
+  return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
 }

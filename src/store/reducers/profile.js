@@ -15,7 +15,6 @@ const initialState = {
 const profileFetchingStart = (state, action) => {
   return updateObject(state, { loading: true })
 }
-
 const profileFetchingSucceed = (state, action) => {
   return updateObject(state, {
     firstName: action.profileData.firstName,
@@ -26,10 +25,10 @@ const profileFetchingSucceed = (state, action) => {
     loading: false
   })
 }
-
 const profileFetchingFail = (state, action) => {
   return updateObject(state, { loading: false, error: action.error })
 }
+
 
 const editorStart = (state, action) => {
   return { ...state, editorActive: true }
@@ -40,15 +39,11 @@ const editorClose = (state, action) => {
 }
 
 const updateUserInfo = (state, action) => {
-  if (action.updateData == null) {
-    return state
-  }
   return updateObject(state, {
     firstName: action.updateData.firstName,
     lastName: action.updateData.lastName,
     city: action.updateData.city,
-    phone: action.updateData.phone,
-    photoURL: state.photoURL
+    phone: action.updateData.phone
   })
 }
 
