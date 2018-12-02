@@ -18,7 +18,7 @@ const modalPhoto = ({ hideModal, dataPhoto, modalStatus: status, modalId: id }) 
       isOpen={status && id === dataPhoto.id ? true : false}
     >
       <ModalBody>
-        <img src={dataPhoto.url} alt={dataPhoto.title} />
+        <img src={dataPhoto.url} alt={dataPhoto.url} />
       </ModalBody>
     </Modal>
   )

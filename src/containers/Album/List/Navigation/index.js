@@ -7,8 +7,11 @@ import { InitialAddAlbum, ActiveAddAlbum } from './AddAlbum'
 import { removeAlbum } from '../../../../store/actions'
 
 class AlbumsListNav extends React.Component {
-  state = {
-    addAlbum: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      addAlbum: false
+    }
   }
   componentWillUnmount() {
     this.setState({ addAlbum: false })
@@ -17,7 +20,7 @@ class AlbumsListNav extends React.Component {
     this.state.addAlbum ? this.setState({ addAlbum: false }) : this.setState({ addAlbum: true })
   }
   handlerDeleteAlbum = () => {
-    this.props.removeSelectedAlbums()
+    this.props.removeSelectedAlbums({ idUser: this.props.idUser, authToken: this.props.authToken })
   }
   render() {
     return (
@@ -39,11 +42,17 @@ class AlbumsListNav extends React.Component {
     )
   }
 }
+const mapStateToProps = state => {
+  return {
+    idUser: state.auth.userId,
+    authToken: state.auth.token
+  }
+}
 export default connect(
-  null,
+  mapStateToProps,
   dispatch => ({
-    removeSelectedAlbums: () => {
-      dispatch(removeAlbum())
+    removeSelectedAlbums: authObj => {
+      dispatch(removeAlbum(authObj))
     }
   })
 )(AlbumsListNav)

@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Button, Col, Input } from 'reactstrap'
 
 import styles from '../../../Album.module.css'
