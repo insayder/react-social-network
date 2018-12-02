@@ -14,6 +14,7 @@ class contentAlbum extends React.Component {
       if (album !== null && album.id === this.props.idAlbum) {
         return true
       }
+      return false
     })
     return (
       <Row width="100%" className={'justify-content-start align-items-center'}>

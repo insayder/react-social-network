@@ -5,15 +5,17 @@
     white-space: nowrap;
 }
 .title {
+    display: inline-flex;
     font-size: 20px;
     max-width: 330px;
-    border-right: 2px solid #000000;
+    overflow: hidden;
     padding: 5px;
 }
 .button {
     height: 30px;
     line-height: 0;
     margin-left: 5px;
+    margin: 5px;
 }
 .uploadButton {
    width: 70%; 
@@ -27,17 +29,39 @@
 }
 .photoCheckbox {
     position: absolute;
+    width: 16px;
+    height: 16px;
     margin: 0;
     top: 10px;
     left: 230px;
 }
 .albumCheckbox {
+    width: 16px;
+    height: 16px;
     position: absolute;
     margin: 0;
-    top: 45px;
+    top: 42px;
     left: 325px;
 }
 .modalSize {
     max-width: 650px;
     text-align: center;
+    overflow: hidden;
+}
+.modalSize img {
+    max-width: 600px;
+}
+.titleAlbum {
+    height: 30px;
+    overflow: hidden;
+    border-bottom: 1px solid gray;
+    opacity: 0.5;
+    margin: 0 0 7px 0;
+    padding: 0 5px 5px 5px;
+}
+.titleAlbum a:hover > h5 {
+    color: #d41620 !important;
+}
+body .album a {
+    text-decoration: none !important;
 }

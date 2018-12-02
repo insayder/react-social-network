@@ -24,9 +24,9 @@ class AlbumsListNav extends React.Component {
   }
   render() {
     return (
-      <Row className="justify-content-around">
+      <Row className={`justify-content-around ${styles.rowPadding}`}>
         <Col className="text-center" md={5}>
-          <h4>Список альбомов %USER%</h4>
+          <h4>Список альбомов</h4>
         </Col>
         <Col className="text-center" md={5}>
           {this.state.addAlbum ? (

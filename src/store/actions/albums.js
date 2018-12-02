@@ -79,7 +79,7 @@ export const loadAlbums = (userId, authToken) => dispatch => {
     .get(`albums/${userId}.json/?auth=${authToken}`)
     .then(response => {
       let processedData = []
-      console.log(response)
+      //console.log(response)
       for (let key in response.data) {
         response.data[key].id = key
         if (response.data[key].photo !== undefined && response.data[key].photo !== null) {
@@ -103,11 +103,16 @@ export const loadAlbums = (userId, authToken) => dispatch => {
 }
 
 export const loadPhotoToDB = objPhoto => dispatch => {
-  console.log(objPhoto)
-  instanceAlbums
-    .post(`/albums/${objPhoto.idUser}/${objPhoto.photo.idAlbum}/photo.json/?auth=${objPhoto.authToken}`, objPhoto.photo)
+  Promise.all(
+    objPhoto.photo.map(value => {
+      return instanceAlbums.post(
+        `/albums/${objPhoto.idUser}/${value.idAlbum}/photo.json/?auth=${objPhoto.authToken}`,
+        value
+      )
+    })
+  )
     .then(response => {
-      if (response.status === 200) {
+      if (response[response.length - 1].status === 200) {
         return instanceAlbums.get(`albums/${objPhoto.idUser}.json/?auth=${objPhoto.authToken}`)
       }
     })

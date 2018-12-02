@@ -52,7 +52,7 @@ const changeAlbumTitle = (state, action) => {
 
 const addToRemovableAlbumPhoto = (state, action) => {
   let removebleAlbumIdPhoto = state.removableAlbumPhoto.idPhoto
-  console.log(action.payload)
+  //console.log(action.payload)
   removebleAlbumIdPhoto.push(action.payload.idPhoto)
   return { ...state, removableAlbumPhoto: { idAlbum: action.payload.idAlbum, idPhoto: removebleAlbumIdPhoto } }
 }
@@ -62,6 +62,7 @@ const deleteFromRemovableAlbumPhoto = (state, action) => {
     if (idPhoto !== action.payload.idPhoto) {
       return idPhoto
     }
+    return undefined
   })
   return {
     ...state,
@@ -70,7 +71,7 @@ const deleteFromRemovableAlbumPhoto = (state, action) => {
 }
 
 const removeSelectedAlbumPhoto = (state, action) => {
-  console.log(action.payload)
+  //console.log(action.payload)
   let newDataAlbumsPhoto = state.dataAlbums.map(album => {
     if (album !== null && album.id === state.removableAlbumPhoto.idAlbum) {
       let newIdPhoto = album.photo.filter(photo => {
@@ -83,6 +84,7 @@ const removeSelectedAlbumPhoto = (state, action) => {
             )
             .catch(error => console.log(error))
         }
+        return false
       })
       album.photo = newIdPhoto
     }
@@ -106,12 +108,13 @@ const deleteFromRemovableAlbum = (state, action) => {
     if (album !== null && album !== action.payload.idAlbum) {
       return album
     }
+    return undefined
   })
   return { ...state, removableAlbum: { idAlbum: _.remove(newRemovableAlbum, undefined) } }
 }
 
 const removeSelectedAlbums = (state, action) => {
-  console.log(state.dataAlbums)
+  //console.log(state.dataAlbums)
   let newDataAlbum = state.dataAlbums.map(album => {
     if (album !== null) {
       if (!_.includes(state.removableAlbum.idAlbum, album.id)) {
@@ -123,19 +126,17 @@ const removeSelectedAlbums = (state, action) => {
           .catch(error => console.log(error))
       }
     }
+    return undefined
   })
   newDataAlbum = newDataAlbum.filter(value => {
     return value !== undefined ? true : false
   })
-  console.log('newDataAlbumA')
-  console.log(newDataAlbum)
   return { ...state, dataAlbums: newDataAlbum }
 }
 
 const addNewAlbum = (state, action) => {
   let newDataAlbums = state.dataAlbums.map(album => album)
   newDataAlbums.push(action.payload.newAlbum)
-  console.log(action.payload)
   instanceAlbums
     //.put(`/albums/${action.payload.idUser}.json/?auth=${action.payload.authToken}`, newDataAlbums)
     .post(`/albums/${action.payload.idUser}.json/?auth=${action.payload.authToken}`, action.payload.newAlbum)

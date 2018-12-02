@@ -17,7 +17,7 @@ const listItem = props => {
   const checkExistSrcPhoto = () => {
     if (props.dataAlbum.photo !== undefined && props.dataAlbum.photo !== null) {
       if (props.dataAlbum.photo.length > 0) {
-        return props.dataAlbum.photo[helpers.randomNumber(0, props.dataAlbum.photo.length - 1)].thumbnailUrl
+        return props.dataAlbum.photo[helpers.randomNumber(0, props.dataAlbum.photo.length - 1)].url
       } else return NO_PHOTO
     } else return NO_PHOTO
   }
@@ -25,7 +25,7 @@ const listItem = props => {
     <Col md={4} width="250" className={`text-center ${styles.mrBottom}`}>
       <Card>
         <Link width="250" to={`/albums/${props.dataAlbum.id}`}>
-          <CardTitle>{props.dataAlbum.title}</CardTitle>
+          <CardTitle className={`${styles.titleAlbum}`}>{props.dataAlbum.title}</CardTitle>
         </Link>
         <Input className={styles.albumCheckbox} type="checkbox" onChange={handlerCheckboxChange} />
         <Link width="250" to={`/albums/${props.dataAlbum.id}`}>

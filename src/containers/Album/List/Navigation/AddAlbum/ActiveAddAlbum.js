@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Input, Row, Col } from 'reactstrap'
 import { addNewAlbum } from '../../../../../store/actions'
-import _ from 'lodash'
 
 import styles from '../../../Album.module.css'
 
@@ -18,6 +17,7 @@ class ActiveAddAlbumClass extends React.Component {
     let arrayOfId = this.props.albums.map(album => {
       return album !== null ? album.id : null
     })
+    console.log(arrayOfId)
     //let id = _.max(arrayOfId) + 1
     let dataNewAlbum = {
       idUser: this.props.idUser,

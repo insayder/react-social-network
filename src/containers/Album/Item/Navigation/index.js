@@ -1,28 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Button, Input } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
 import FileUploader from 'react-firebase-file-uploader'
 import { AlbumTitle, EditAlbumTitle } from './AlbumNavTitle'
 import { changeNameAlbum, removeAlbumPhoto, loadPhotoToDB } from '../../../../store/actions'
 
 import styles from './../../Album.module.css'
 import firebase from 'firebase'
-import { API_KEY } from '../../../../constants/auth'
-
-const config = {
-  apiKey: API_KEY,
-  authDomain: 'react-social-network-1f579.firebaseapp.com',
-  databaseURL: 'https://react-social-network-1f579.firebaseio.com',
-  storageBucket: 'gs://react-social-network-1f579.appspot.com'
-}
-
-firebase.initializeApp(config)
+import { config } from '../../../../constants/firebase'
 
 class NavAlbum extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      editTitle: false
+      editTitle: false,
+      loadButtonStatus: true,
+      files: {
+        name: [],
+        data: []
+      }
     }
   }
   handlerDeleteAlbumPhoto = e => {
@@ -30,28 +26,69 @@ class NavAlbum extends React.Component {
       this.props.removeSelectedPhoto({ idUser: this.props.idUser, authToken: this.props.authToken })
     }
   }
-  handleStartUpload = e => {
-    console.log('uploaded')
+  handlerStartUpload = e => {
+    let oldData = this.state.files.data
+    let oldName = this.state.files.name
+    oldData.push(e)
+    this.setState({
+      files: {
+        data: oldData,
+        name: oldName
+      }
+    })
+    console.log(this.state.files)
   }
-  handleUploadSuccess = filename => {
-    firebase
-      .storage()
-      .ref('images')
-      .child(filename)
-      .getDownloadURL()
-      .then(url => {
-        console.log(url)
-        let objPhoto = {
-          photo: {
+  handlerClickLoadPhoto = () => {
+    // ReactDOM.findDOMNode(this.refs.files).value = ''
+    Promise.all(
+      this.state.files.data.map((file, i) => {
+        return firebase
+          .storage()
+          .ref('images')
+          .child(this.state.files.name[i])
+          .getDownloadURL()
+      })
+    )
+      .then(result => {
+        let photo = []
+        result.map(url => {
+          let dataPhoto = {
             url: url,
             idAlbum: this.props.idAlbum
-          },
+          }
+          photo.push(dataPhoto)
+          return url
+        })
+        let objPhoto = {
+          photo: photo,
           idUser: this.props.idUser,
           authToken: this.props.authToken
         }
         return this.props.loadPhoto(objPhoto)
       })
+      .catch(error => {
+        console.log(error)
+      })
+    this.setState({
+      loadButtonStatus: true
+    })
   }
+  handlerUploadSuccess = filename => {
+    let oldData = this.state.files.data
+    let oldName = this.state.files.name
+    oldName.push(filename)
+    this.setState({
+      loadButtonStatus: false,
+      files: {
+        name: oldName,
+        data: oldData
+      }
+    })
+  }
+  handlerUploadError = e => {
+    //console.log(e)
+  }
+
   handlerChangeAlbumName = e => {
     this.setState({ editTitle: false })
     this.props.changeAlbumTitle({
@@ -69,8 +106,9 @@ class NavAlbum extends React.Component {
       if (album !== null && album.id === this.props.idAlbum) {
         return album
       }
+      return false
     })
-
+    console.log(album)
     return (
       <Row className={`justify-content-between align-items-center ${styles.rowPadding}`}>
         <Col>
@@ -86,18 +124,29 @@ class NavAlbum extends React.Component {
             )}
           </Row>
         </Col>
-        <form className="d-flex" method="POST" encType="multipart/form-data">
+        <form className="d-flex">
           <FileUploader
+            //ref="files"
+            ref={instance => (this.fileUploader = instance)}
+            storageRef={firebase.storage().ref('images')}
             accept="image/*"
             name="albumPhoto"
             randomizeFilename
-            storageRef={firebase.storage().ref('images')}
-            onUploadStart={this.handleStartUpload}
-            onUploadSuccess={this.handleUploadSuccess}
+            multiple
+            access_token={this.props.authToken}
+            onUploadError={this.handlerUploadError}
+            onUploadStart={this.handlerStartUpload}
+            onUploadSuccess={this.handlerUploadSuccess}
           />
-          {/* <Button type="button" onClick={this.handlerClickLoadPhoto} className={`${styles.button}`} color="success">
+          <Button
+            disabled={this.state.loadButtonStatus}
+            type="button"
+            onClick={this.handlerClickLoadPhoto}
+            className={`${styles.button}`}
+            color="success"
+          >
             Зарузить
-          </Button> */}
+          </Button>
         </form>
         <Button type="submit" onClick={this.handlerDeleteAlbumPhoto} className={`${styles.button}`} color="danger">
           Удалить выбранные
