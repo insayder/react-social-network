@@ -8,7 +8,6 @@ import { Route, Switch } from 'react-router-dom'
 import TodoList from '../../containers/Tasks/components/todo-list'
 import ProfileForm from './components/ProfileForm/ProfileForm'
 import * as actions from '../../store/actions'
-import Spinner from '../../components/UI/Spinner/Spinner'
 
 class Profile extends Component {
   constructor(props) {
