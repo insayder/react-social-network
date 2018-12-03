@@ -1,0 +1,30 @@
+.post_card {
+    position: relative;
+}
+
+.post_header:after,
+.post_header:before {
+    position: absolute;
+    top: 11px;
+    left: -16px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+}
+
+.post_header:after {
+    border-width: 7px;
+    border-right-color: #f7f7f7;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+
+.post_header:before {
+    border-right-color: #ddd;
+    border-width: 8px;
+}

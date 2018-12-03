@@ -11,9 +11,6 @@ function NavigationItems(props) {
       <NavigationItem link="/" exact>
         Logo
       </NavigationItem>
-      <NavigationItem link="/wall" exact>
-        Wall
-      </NavigationItem>
       <NavigationItem link="/auth/login" exact>
         Login
       </NavigationItem>

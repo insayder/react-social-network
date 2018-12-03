@@ -21,6 +21,7 @@ class App extends Component {
     const routes = (
       <Switch>
         <PrivateRoute path="/albums" component={Album} />
+        <PrivateRoute path="/users/:userId/wall/" component={Wall} />
         <PrivateRoute path="/wall" component={Wall} />
         <PrivateRoute path="/profile" component={Profile} />
         <PrivateRoute path="/tasks" component={Tasks} />

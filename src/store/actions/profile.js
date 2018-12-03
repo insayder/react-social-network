@@ -15,17 +15,41 @@ export const profileFetchingFail = error => {
   return { type: actionTypes.PROFILE_FETCHING_FAIL, error: error }
 }
 
-export const profileFetch = (userId, idToken) => {
+export const profileViewedUserFetchingStart = () => {
+  return { type: actionTypes.PROFILE_VIEWED_USER_FETCHING_START }
+}
+
+export const profileViewedUserFetchingSucceed = profileData => {
+  return { type: actionTypes.PROFILE_VIEWED_USER_FETCHING_SUCCEED, profileData }
+}
+
+export const profileViewedUserFetchingFail = error => {
+  return { type: actionTypes.PROFILE_VIEWED_USER_FETCHING_FAIL, error }
+}
+
+export const profileFetch = (userId, idToken, isSelfProfile = true) => {
   return dispatch => {
-    dispatch(profileFetchingStart())
+    if (isSelfProfile) {
+      dispatch(profileFetchingStart())
+    } else {
+      dispatch(profileViewedUserFetchingStart())
+    }
     const url = `/${userId}.json?auth=${idToken}`
     axiosProfile
       .get(url)
       .then(response => {
-        dispatch(profileFetchingSucceed(response.data))
+        if (isSelfProfile) {
+          dispatch(profileFetchingSucceed(response.data))
+        } else {
+          dispatch(profileViewedUserFetchingSucceed(response.data))
+        }
       })
       .catch(error => {
-        dispatch(profileFetchingFail(error))
+        if (isSelfProfile) {
+          dispatch(profileFetchingFail(error))
+        } else {
+          dispatch(profileViewedUserFetchingFail(error))
+        }
       })
   }
 }

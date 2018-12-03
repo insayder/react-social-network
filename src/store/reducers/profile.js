@@ -10,7 +10,17 @@ const initialState = {
   new: true,
   loading: false,
   error: null,
-  editorActive: false
+  editorActive: false,
+  viewedUserProfile: {
+    firstName: '',
+    lastName: '',
+    photoURL: '',
+    city: '',
+    phone: '',
+    loading: false,
+    error: null,
+    userId: ''
+  }
 }
 
 const profileFetchingStart = (state, action) => {
@@ -50,6 +60,31 @@ const profileUpdatingFail = (state, action) => {
   return updateObject(state, { error: action.error })
 }
 
+const profileViewedUserFetchingStart = (state, action) => {
+  const updatedViewedUserProfile = updateObject(state.viewedUserProfile, { loading: true })
+  return updateObject(state, updatedViewedUserProfile)
+}
+
+const profileViewedUserFetchingSucceed = (state, action) => {
+  const updatedViewedUserProfile = updateObject(state.viewedUserProfile, {
+    firstName: action.profileData.firstName,
+    lastName: action.profileData.lastName,
+    photoURL: action.profileData.photoURL,
+    city: action.profileData.city,
+    phone: action.profileData.phone,
+    loading: false
+  })
+  return updateObject(state, { viewedUserProfile: updatedViewedUserProfile })
+}
+
+const profileViewedUserFetchingFail = (state, action) => {
+  const updatedViewedUserProfile = updateObject(state.viewedUserProfile, {
+    error: action.error,
+    loading: false
+  })
+  return updateObject(state, updatedViewedUserProfile)
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.PROFILE_FETCHING_START:
@@ -72,6 +107,12 @@ const reducer = (state = initialState, action) => {
       return profileUpdatingSucceed(state, action)
     case actionTypes.PROFILE_UPDATING_FAIL:
       return profileUpdatingFail(state, action)
+    case actionTypes.PROFILE_VIEWED_USER_FETCHING_START:
+      return profileViewedUserFetchingStart(state, action)
+    case actionTypes.PROFILE_VIEWED_USER_FETCHING_SUCCEED:
+      return profileViewedUserFetchingSucceed(state, action)
+    case actionTypes.PROFILE_VIEWED_USER_FETCHING_FAIL:
+      return profileViewedUserFetchingFail(state, action)
     default:
       return state
   }

@@ -36,9 +36,7 @@ class Profile extends Component {
   }
 
   render() {
-    console.log(this.props.loading)
     let content
-
     if (this.props.newUser) {
       content = <ProfileForm />
     } else {
