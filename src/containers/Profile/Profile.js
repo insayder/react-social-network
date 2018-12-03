@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
-import Album from '../Album/Album'
+// import Album from '../Album/Album'
+import Album from '../Album/List/AlbumList'
 import { Container, Row, Col } from 'reactstrap'
 import UserInfoWithRedactor from './components/user-info-with-redactor'
 import styles from './Profile.module.css'
@@ -8,6 +9,7 @@ import { Route, Switch } from 'react-router-dom'
 import TodoList from '../../containers/Tasks/components/todo-list'
 import ProfileForm from './components/ProfileForm/ProfileForm'
 import * as actions from '../../store/actions'
+import { loadAlbums } from '../../store/actions'
 
 class Profile extends Component {
   constructor(props) {
@@ -21,12 +23,13 @@ class Profile extends Component {
         job: '',
         avatarUrl: ''
       },
-      albums: [],
+      albums: this.props.albums,
       tasks: [],
       editorActive: false
     }
   }
   componentDidMount() {
+    this.props.loadDataAlbums(this.props.userId, this.props.idToken)
     //fetch user info
     this.props.fetchProfile(this.props.userId, this.props.idToken)
     this.setState({ albums: ['newHero', 'tripToMountains', 'partyForEveryBody'] })
@@ -58,9 +61,7 @@ class Profile extends Component {
           </Row>
           <h3>Albums {this.state.albums.length}</h3>
           <Row className={styles.albumsBar}>
-            <Switch>
-              <Route path="/album" component={Album} />
-            </Switch>
+            <Album isPropfile={true} />
           </Row>
         </Container>
       )
@@ -79,12 +80,16 @@ const mapStateToProps = state => {
     lastName: state.profile.lastName,
     loading: state.profile.loading,
     photoURL: state.profile.photoURL,
-    newUser: state.profile.new
+    newUser: state.profile.new,
+    albums: state.albums.dataAlbums
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  fetchProfile: (userId, idToken) => dispatch(actions.profileFetch(userId, idToken))
+  fetchProfile: (userId, idToken) => dispatch(actions.profileFetch(userId, idToken)),
+  loadDataAlbums: (userId, authToken) => {
+    dispatch(loadAlbums(userId, authToken))
+  }
 })
 
 export default connect(

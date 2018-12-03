@@ -16,10 +16,7 @@ class NavAlbum extends React.Component {
     this.state = {
       editTitle: false,
       loadButtonStatus: true,
-      files: {
-        name: [],
-        data: []
-      }
+      files: []
     }
   }
   handlerDeleteAlbumPhoto = e => {
@@ -27,29 +24,36 @@ class NavAlbum extends React.Component {
       this.props.removeSelectedPhoto({ idUser: this.props.idUser, authToken: this.props.authToken })
     }
   }
-  handlerStartUpload = e => {
-    let oldData = this.state.files.data
-    let oldName = this.state.files.name
-    oldData.push(e)
-    this.setState({
-      files: {
-        data: oldData,
-        name: oldName
-      }
-    })
-  }
+  // handlerStartUpload = e => {
+  //   let oldData = this.state.files.data
+  //   let oldName = this.state.files.name
+  //   oldData.push(e)
+  //   this.setState({
+  //     files: {
+  //       data: oldData,
+  //       name: oldName
+  //     }
+  //   })
+  // }
   handlerClickLoadPhoto = () => {
-    // ReactDOM.findDOMNode(this.refs.files).value = ''
     Promise.all(
-      this.state.files.data.map((file, i) => {
+      this.state.files.map(file => {
         return firebase
           .storage()
-          .ref('images')
-          .child(this.state.files.name[i])
-          .getDownloadURL()
+          .ref(`images/${file.name}`)
+          .put(file)
       })
-    )
-      .then(result => {
+    ).then(response => {
+      Promise.all(
+        response.map(resp => {
+          //console.log(resp)
+          return firebase
+            .storage()
+            .ref('images')
+            .child(resp.metadata.name)
+            .getDownloadURL()
+        })
+      ).then(result => {
         let photo = []
         result.map(url => {
           let dataPhoto = {
@@ -64,37 +68,42 @@ class NavAlbum extends React.Component {
           idUser: this.props.idUser,
           authToken: this.props.authToken
         }
-        //this.fileUploader.value = ''
+        // this.fileUploader.value = ''
         return this.props.loadPhoto(objPhoto)
       })
-      .catch(error => {
-        console.log(error)
-      })
+    })
+    this.fileUploader.value = ''
     this.setState({
       loadButtonStatus: true,
-      files: {
-        data: [],
-        name: []
-      }
+      files: []
     })
   }
-  handlerUploadSuccess = filename => {
-    let oldData = this.state.files.data
-    let oldName = this.state.files.name
-    oldName.push(filename)
-    this.setState({
-      loadButtonStatus: false,
-      files: {
-        name: oldName,
-        data: oldData
-      }
-    })
-  }
+  // handlerUploadSuccess = filename => {
+  //   let oldData = this.state.files.data
+  //   let oldName = this.state.files.name
+  //   oldName.push(filename)
+  //   this.setState({
+  //     loadButtonStatus: false,
+  //     files: {
+  //       name: oldName,
+  //       data: oldData
+  //     }
+  //   })
+  // }
   handlerUploadError = e => {
     //  console.log(e)
   }
 
-  handlerChangeUpload = e => {}
+  handlerChangeUpload = e => {
+    let files = []
+    for (let i = 0; i < e.target.files.length; ++i) {
+      files.push(e.target.files[i])
+    }
+    this.setState({
+      files: files,
+      loadButtonStatus: files.length > 0 ? false : true
+    })
+  }
   handlerChangeAlbumName = e => {
     this.setState({ editTitle: false })
     this.props.changeAlbumTitle({
@@ -141,9 +150,9 @@ class NavAlbum extends React.Component {
             defaultValue=""
             // access_token={this.props.authToken}
             onUploadError={this.handlerUploadError}
-            onUploadStart={this.handlerStartUpload}
-            onUploadSuccess={this.handlerUploadSuccess}
-            //onChange={this.handlerChangeUpload}
+            // onUploadStart={this.handlerStartUpload}
+            // onUploadSuccess={this.handlerUploadSuccess}
+            onChange={this.handlerChangeUpload}
           />
           <Button
             disabled={this.state.loadButtonStatus}

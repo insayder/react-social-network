@@ -28,7 +28,11 @@ const listItem = props => {
         <Link width="250" to={`/albums/${props.dataAlbum.id}`}>
           <CardTitle className={`${styles.titleAlbum}`}>{props.dataAlbum.title}</CardTitle>
         </Link>
-        <Input className={styles.albumCheckbox} type="checkbox" onChange={handlerCheckboxChange} />
+        {!props.isPropfile ? (
+          <Input className={styles.albumCheckbox} type="checkbox" onChange={handlerCheckboxChange} />
+        ) : (
+          ''
+        )}
         <Link width="250" to={`/albums/${props.dataAlbum.id}`}>
           <CardImg width="250" height="150" src={checkExistSrcPhoto()} />
         </Link>

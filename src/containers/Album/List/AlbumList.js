@@ -10,12 +10,12 @@ class AlbumList extends React.Component {
   render() {
     return (
       <Container>
-        <AlbumsNav />
+        {!this.props.isPropfile ? <AlbumsNav /> : ''}
         <Row width="100%" className="align-items-center">
           {this.props.albums !== null && this.props.albums !== undefined
             ? this.props.albums.length > 0
               ? this.props.albums.map((value, i) => {
-                  return <ListItem key={value.title} dataAlbum={value} />
+                  return <ListItem isPropfile={this.props.isPropfile} key={value.title} dataAlbum={value} />
                 })
               : ''
             : ''}
