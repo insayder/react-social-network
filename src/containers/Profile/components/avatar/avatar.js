@@ -1,50 +1,36 @@
 import React, { Component, Fragment } from 'react'
-
 import { connect } from 'react-redux'
 
 import styles from './Avatar.module.css'
 import { Col } from 'reactstrap'
-import { editorStart, profileFetch } from '../../../../store/actions'
+import { changeAvatar, editorStart } from '../../../../store/actions'
 
-import { config } from '../../../../constants/firebase'
+import FileUploader from "react-firebase-file-uploader"
 import firebase from 'firebase'
-import FileUploader from "react-firebase-file-uploader";
-
-
-
 class Avatar extends Component {
   constructor(props) {
     super(props)
-    this.showNewAvatar = this.showNewAvatar.bind(this)
-    this.state = {avatarURL: '',
-    token: localStorage.getItem('token')}
+    this.state = { photoUrl: '' }
+    this.changeAvatar = this.changeAvatar.bind(this)
   }
-  showNewAvatar(e) {
-    e.preventDefault()
-    firebase
-      .storage()
-      .ref("avatars")
-      .child(e.filename)
-      .getDownloadURL()
-      .then(url => this.setState({ avatarURL: url }));
-
+  changeAvatar(fileName) {
+    console.log(this.props.photoUrl)
+    this.props.changeAvatar(this.props.userId, fileName)
   }
   render() {
     return (
       <Col xs="3">
-        <form  onSubmit={this.showNewAvatar}>
+        <form className={styles.downloadButton}>
           <FileUploader
             accept="image/*"
             name="avatar"
-            access_token={this.state.token}
-
+            access_token={this.props.token}
             randomizeFilename
             storageRef={firebase.storage().ref("avatars")}
-     
+            onUploadSuccess={this.changeAvatar}
           />
-          <p>{this.state.avatarURL}</p>
         </form>
-          <img src='https://picsum.photos/200/200' alt="User avatar"/>
+        <img className={styles.avatar} src={this.props.photoUrl} alt="User avatar" />
       </Col>
     )
   }
@@ -53,14 +39,15 @@ class Avatar extends Component {
 const mapStateToProps = state => {
   return {
     token: state.auth.token,
-    userId: state.auth.userId
+    userId: state.auth.userId,
+    photoUrl: state.profile.photoUrl
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    profileFetch: (userId, token) => dispatch(profileFetch(userId, token)),
-    editorStart: () => dispatch(editorStart())
+    editorStart: () => dispatch(editorStart()),
+    changeAvatar: (userId, fileName) => dispatch(changeAvatar(userId, fileName)),
   }
 }
 
@@ -68,5 +55,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Avatar)
-
-

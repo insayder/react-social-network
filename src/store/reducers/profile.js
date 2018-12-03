@@ -4,7 +4,7 @@ import { updateObject } from '../../shared/utility'
 const initialState = {
   firstName: '',
   lastName: '',
-  photoURL: '',
+  URLphoto: '',
   city: '',
   phone: '',
   new: true,
@@ -53,7 +53,7 @@ const updateUserInfo = (state, action) => {
     lastName: action.updateData.lastName,
     city: action.updateData.city,
     phone: action.updateData.phone,
-    photoURL: state.photoURL
+    photoUrl: action.updateData.photoUrl
   })
 }
 
@@ -72,6 +72,17 @@ const profileViewedUserFetchingSucceed = (state, action) => {
     loading: false
   })
   return updateObject(state, { viewedUserProfile: updatedViewedUserProfile })
+}
+const profileUpdatingStart = (state, action) => {
+  return updateObject(state, { loading: true })
+}
+
+const profileUpdatingSucceed = (state, action) => {
+  return updateObject(state, { ...action.profileData, loading: false })
+}
+
+const profileUpdatingFail = (state, action) => {
+  return updateObject(state, { error: action.error })
 }
 
 const profileViewedUserFetchingFail = (state, action) => {

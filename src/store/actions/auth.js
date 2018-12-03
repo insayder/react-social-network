@@ -92,12 +92,13 @@ export const updateAuthData = (authData, remember = null) => {
     dispatch(authSuccess(authData))
   }
 }
-
 export const auth = (email, password, remember, isLogin) => {
   return dispatch => {
     dispatch(authStart())
-    firebase
-      .auth().signInWithEmailAndPassword(email, password)
+    const authData = { email, password, returnSecureToken: true }
+    const url = isLogin ? `/verifyPassword?key=${API_KEY}` : `/signupNewUser?key=${API_KEY}`
+    axiosAuth
+      .post(url, authData)
       .then(response => {
         if (!isLogin) {
           dispatch(profileCreate(response.data.localId, response.data.idToken, email))
@@ -105,7 +106,7 @@ export const auth = (email, password, remember, isLogin) => {
         dispatch(processAuthResponse(response.data, remember))
         dispatch(processAuthResponse(response, remember))
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(authFail(error))
       })
   }

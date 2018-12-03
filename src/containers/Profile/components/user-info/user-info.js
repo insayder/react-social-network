@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 
 import { editorStart, profileFetch } from '../../../../store/actions'
 
-import firebase from 'firebase'
 class UserInfo extends Component {
   constructor(props) {
     super(props)
@@ -45,7 +44,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    profileFetch: (userId, token) => dispatch(profileFetch(userId, token)),
     editorStart: () => dispatch(editorStart())
   }
 }

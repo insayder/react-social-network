@@ -6,4 +6,4 @@ export { clearRemovalbeAlbumPhoto } from './albums'
 export { addToRemovableAlbum, deleteFromRemovableAlbum, removeAlbum, addNewAlbum } from './albums'
 export { loadAlbums, loadPhotoToDB } from './albums'
 
-export { changeUserInfo, updateUserInfo, editorStart, editorClose, profileFetch } from './profile'
+export { profileUpdate, changeAvatar, changeUserInfo, updateUserInfo, editorStart, editorClose, profileFetch } from './profile'

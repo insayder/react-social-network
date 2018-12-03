@@ -2,7 +2,6 @@ import md5 from 'js-md5'
 
 import * as actionTypes from './actionTypes'
 import { axiosProfile } from '../../axios/profile'
-
 import firebase from 'firebase'
 export const profileFetchingStart = () => {
   return { type: actionTypes.PROFILE_FETCHING_START }
@@ -30,7 +29,6 @@ export const profileViewedUserFetchingFail = error => {
 
 export const profileFetch = (userId, idToken, isSelfProfile = true) => {
   return dispatch => {
-<<<<<<< HEAD
     if (isSelfProfile) {
       dispatch(profileFetchingStart())
     } else {
@@ -52,17 +50,10 @@ export const profileFetch = (userId, idToken, isSelfProfile = true) => {
         } else {
           dispatch(profileViewedUserFetchingFail(error))
         }
-=======
-    dispatch(profileFetchingStart())
-    firebase
-      .database()
-      .ref('profiles/' + userId)
-      .on('value', function(snapshot) {
-        dispatch(updateUserInfo(snapshot.val()))
->>>>>>> edit works
-      })
   }
 }
+}
+
 
 export const profileCreate = (userId, idToken, email, profileData = null) => {
   return dispatch => {
@@ -129,20 +120,30 @@ export const editorClose = () => {
   return { type: actionTypes.PROFILE_CLOSE_EDITOR }
 }
 
+export const updateUserInfo = updateData => {
+  return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
+}
+
 export const changeUserInfo = (userId, updateData) => {
   return dispatch => {
+    console.log(updateData)
     firebase
       .database()
       .ref('profiles/' + userId)
-      .update({
-        firstName: updateData.firstName,
-        lastName: updateData.lastName,
-        city: updateData.city,
-        phone: updateData.phone
-      })
+      .update(updateData)
+    dispatch(updateUserInfo(updateData))
   }
 }
 
-export const updateUserInfo = updateData => {
-  return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
+export const changeAvatar = (userId, fileName) => {
+  return dispatch => {
+    firebase
+      .storage()
+      .ref('avatars')
+      .child(fileName)
+      .getDownloadURL()
+      .then(url => {
+        dispatch(changeUserInfo(userId, { photoUrl: url }))
+      })
+  }
 }

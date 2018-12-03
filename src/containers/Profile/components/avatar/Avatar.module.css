@@ -1,5 +1,25 @@
+input {
+   
+}
+:-webkit-autofill { color: #fff !important; }
+
 .avatar {
     border-radius: 100%;
-    width: auto;
-    height: auto;
+    width: 200px;
+    height: 200px;
+}
+.downloadButton {
+  
+}
+.downloadButton + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+}
+
+.downloadButton:focus + label,
+.downloadButton + label:hover {
+    background-color: red;
 }
