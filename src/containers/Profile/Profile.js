@@ -24,7 +24,7 @@ class Profile extends Component {
   render() {
     let content
 
-    if (false) {
+    if (this.props.newUser) {
       content = <ProfileForm />
     } else {
       content = (
