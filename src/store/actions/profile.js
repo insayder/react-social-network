@@ -135,7 +135,7 @@ export const changeUserInfo = (userId, updateData) => {
   }
 }
 
-export const changeAvatar = (userId, fileName) => {
+export const changeAvatar = (userId, fileName, userState) => {
   return dispatch => {
     firebase
       .storage()
@@ -143,7 +143,7 @@ export const changeAvatar = (userId, fileName) => {
       .child(fileName)
       .getDownloadURL()
       .then(url => {
-        dispatch(changeUserInfo(userId, { photoUrl: url }))
+        dispatch(changeUserInfo(userId, { ...userState, photoUrl: url }))
       })
   }
 }
