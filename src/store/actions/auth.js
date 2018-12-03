@@ -1,7 +1,7 @@
 import { axiosAuth, axiosRefreshToken } from '../../axios/auth'
 import * as actionTypes from './actionTypes'
 import { API_KEY } from '../../constants/auth'
-import { profileFetch, profileStateReset } from './profile'
+import { profileStateReset, profileCreate } from './profile'
 
 export const authStart = (email, password) => {
   return { type: actionTypes.AUTH_START }
@@ -100,6 +100,9 @@ export const auth = (email, password, remember, isLogin) => {
     axiosAuth
       .post(url, authData)
       .then(response => {
+        if (!isLogin) {
+          dispatch(profileCreate(response.data.localId, response.data.idToken, email))
+        }
         dispatch(processAuthResponse(response.data, remember))
       })
       .catch(error => {
@@ -112,7 +115,6 @@ const processAuthResponse = (responseData, remember) => {
   return dispatch => {
     dispatch(updateAuthData(responseData, remember))
     dispatch(setAuthTimeoutChecker(responseData.expiresIn))
-    dispatch(profileFetch(responseData.localId, responseData.idToken))
   }
 }
 
@@ -131,7 +133,6 @@ export const authCheckLoginStatus = () => {
     if (tokenExpirationDate > new Date()) {
       dispatch(authSuccess({ localId: userId, idToken: token }))
       dispatch(setAuthTimeoutChecker((tokenExpirationDate.getTime() - new Date().getTime()) / 1000))
-      dispatch(profileFetch(userId, token))
     } else {
       dispatch(authRefreshIdToken())
     }

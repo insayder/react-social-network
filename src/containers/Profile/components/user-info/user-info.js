@@ -13,7 +13,7 @@ class UserInfo extends Component {
     this.props.editorStart()
   }
   componentDidMount() {
-    this.props.profileFetch('LtzEkXcHetTl05cRmP68xVGtzKh1', this.props.token)
+    this.props.profileFetch(this.props.userId, this.props.token)
   }
   render() {
     return (

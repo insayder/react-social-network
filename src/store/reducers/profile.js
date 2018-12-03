@@ -7,6 +7,7 @@ const initialState = {
   photoURL: '',
   city: '',
   phone: '',
+  new: true,
   loading: false,
   error: null,
   editorActive: false
@@ -17,18 +18,13 @@ const profileFetchingStart = (state, action) => {
 }
 const profileFetchingSucceed = (state, action) => {
   return updateObject(state, {
-    firstName: action.profileData.firstName,
-    lastName: action.profileData.lastName,
-    photoURL: action.profileData.photoURL,
-    city: action.profileData.city,
-    phone: action.profileData.phone,
+    ...action.profileData,
     loading: false
   })
 }
 const profileFetchingFail = (state, action) => {
   return updateObject(state, { loading: false, error: action.error })
 }
-
 
 const editorStart = (state, action) => {
   return { ...state, editorActive: true }
@@ -39,12 +35,19 @@ const editorClose = (state, action) => {
 }
 
 const updateUserInfo = (state, action) => {
-  return updateObject(state, {
-    firstName: action.updateData.firstName,
-    lastName: action.updateData.lastName,
-    city: action.updateData.city,
-    phone: action.updateData.phone
-  })
+  return updateObject(state, action.updatedData)
+}
+
+const profileUpdatingStart = (state, action) => {
+  return updateObject(state, { loading: true })
+}
+
+const profileUpdatingSucceed = (state, action) => {
+  return updateObject(state, { ...action.profileData, loading: false })
+}
+
+const profileUpdatingFail = (state, action) => {
+  return updateObject(state, { error: action.error })
 }
 
 const reducer = (state = initialState, action) => {
@@ -63,6 +66,12 @@ const reducer = (state = initialState, action) => {
       return editorClose(state, action)
     case actionTypes.UPDATE_USER_INFO:
       return updateUserInfo(state, action)
+    case actionTypes.PROFILE_UPDATING_START:
+      return profileUpdatingStart(state, action)
+    case actionTypes.PROFILE_UPDATING_SUCCEED:
+      return profileUpdatingSucceed(state, action)
+    case actionTypes.PROFILE_UPDATING_FAIL:
+      return profileUpdatingFail(state, action)
     default:
       return state
   }
