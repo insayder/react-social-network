@@ -76,7 +76,41 @@ class AuthForm extends Component {
         labelText: 'Remember me'
       }
     },
-    formValid: false
+    formValid: false,
+    type: ''
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.type !== state.type) {
+      const newEmailField = updateObject(state.fields.email, {
+        validation: updateObject(state.fields.email.validation, { enabled: props.type === 'register' })
+      })
+
+      const newPasswordField = updateObject(state.fields.password, {
+        validation: updateObject(state.fields.password.validation, { enabled: props.type === 'register' }),
+        autoComplete: props.type === 'login' ? 'current-password' : 'new-pasword'
+      })
+
+      const newConfirmPasswordField = updateObject(state.fields.confirmPassword, {
+        validation: updateObject(state.fields.confirmPassword.validation, { enabled: props.type === 'register' }),
+        displayed: props.type === 'register'
+      })
+
+      const newRememberField = updateObject(state.fields.remember, {
+        displayed: props.type === 'login'
+      })
+
+      const updatedFields = updateObject(state.fields, {
+        email: newEmailField,
+        password: newPasswordField,
+        confirmPassword: newConfirmPasswordField,
+        remember: newRememberField
+      })
+
+      const newState = updateObject(state, { fields: updatedFields, type: props.type })
+      return newState
+    }
+    return null
   }
 
   onChangeHandler = event => {
