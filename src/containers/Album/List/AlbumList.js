@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import ListItem from './ListItem'
 import AlbumsNav from './Navigation'
+import PropTypes from 'prop-types'
 
 class AlbumList extends React.Component {
   render() {
@@ -22,6 +23,10 @@ class AlbumList extends React.Component {
       </Container>
     )
   }
+}
+
+AlbumList.propTypes = {
+  albums: PropTypes.array
 }
 
 export default connect(

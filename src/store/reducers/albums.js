@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { instanceAlbums } from '../../axios/albums'
 
 const initialState = {
-  dataAlbums: {},
+  dataAlbums: [],
   modal: {
     status: false,
     id: null
@@ -30,19 +30,24 @@ const changeAlbumTitle = (state, action) => {
   let newDataAlbums = state.dataAlbums.map(album => {
     if (album !== null && album.id === action.payload.id) {
       album.title = action.payload.title
-      newAlbumInfo = {
-        //id: album.id,
-        photo: album.photo,
-        title: action.payload.title,
-        userId: action.payload.idUser
-      }
       instanceAlbums
-        .put(
-          `/albums/${action.payload.idUser}/${action.payload.id}.json/?auth=${action.payload.authToken}`,
-          newAlbumInfo
-        )
-        .catch(error => {
-          console.log(error)
+        .get(`/albums/${action.payload.idUser}/${action.payload.id}/photo.json?auth=${action.payload.authToken}`)
+        .then(response => {
+          newAlbumInfo = {
+            //id: album.id,
+            photo: response.data,
+            title: action.payload.title,
+            userId: action.payload.idUser
+          }
+          console.log(newAlbumInfo)
+          instanceAlbums
+            .put(
+              `/albums/${action.payload.idUser}/${action.payload.id}.json?auth=${action.payload.authToken}`,
+              newAlbumInfo
+            )
+            .catch(error => {
+              console.log(error)
+            })
         })
     }
     return album

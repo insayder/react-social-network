@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Col, Input } from 'reactstrap'
+import PropTypes from 'prop-types'
 
 import styles from '../../../Album.module.css'
 
@@ -31,6 +32,17 @@ class EditAlbumTitle extends React.Component {
       </Col>
     )
   }
+}
+
+EditAlbumTitle.propTypes = {
+  allowEdit: PropTypes.func,
+  changeTitle: PropTypes.func,
+  dataAlbum: PropTypes.shape({
+    photo: PropTypes.array,
+    title: PropTypes.string,
+    userId: PropTypes.string,
+    id: PropTypes.string
+  })
 }
 
 export { EditAlbumTitle }

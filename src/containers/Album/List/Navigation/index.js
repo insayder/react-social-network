@@ -5,6 +5,7 @@ import { Col, Row, Button } from 'reactstrap'
 import styles from '../../Album.module.css'
 import { InitialAddAlbum, ActiveAddAlbum } from './AddAlbum'
 import { removeAlbum } from '../../../../store/actions'
+import PropTypes from 'prop-types'
 
 class AlbumsListNav extends React.Component {
   constructor(props) {
@@ -48,6 +49,13 @@ const mapStateToProps = state => {
     authToken: state.auth.token
   }
 }
+
+AlbumsListNav.ptopTypes = {
+  removeSelectedAlbums: PropTypes.func,
+  idUser: PropTypes.string,
+  authToken: PropTypes.string
+}
+
 export default connect(
   mapStateToProps,
   dispatch => ({

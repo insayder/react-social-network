@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Row } from 'reactstrap'
 import { clearRemovalbeAlbumPhoto } from '../../../../store/actions'
+import PropTypes from 'prop-types'
 
 import Photo from './Photo'
 
@@ -18,10 +19,12 @@ class contentAlbum extends React.Component {
     })
     return (
       <Row width="100%" className={'justify-content-start align-items-center'}>
-        {albumPhoto.photo !== null && albumPhoto.photo !== undefined
-          ? albumPhoto.photo.map(photo => {
-              return <Photo key={photo.url} idAlbum={this.props.idAlbum} dataPhoto={photo} />
-            })
+        {albumPhoto !== undefined
+          ? albumPhoto.photo !== null && albumPhoto.photo !== undefined
+            ? albumPhoto.photo.map(photo => {
+                return <Photo key={photo.url} idAlbum={this.props.idAlbum} dataPhoto={photo} />
+              })
+            : ''
           : ''}
       </Row>
     )
@@ -32,6 +35,16 @@ const mapStateToProps = (state, ownProp) => {
   return {
     albums: state.albums.dataAlbums
   }
+}
+
+contentAlbum.defaultProps = {
+  albums: []
+}
+
+contentAlbum.propTypes = {
+  albums: PropTypes.array,
+  clearRemovableAlbumPhoto: PropTypes.func,
+  idAlbum: PropTypes.string
 }
 
 export default connect(

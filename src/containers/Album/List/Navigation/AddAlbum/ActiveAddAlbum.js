@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Input, Row, Col } from 'reactstrap'
 import { addNewAlbum } from '../../../../../store/actions'
+import PropTypes from 'prop-types'
 
 import styles from '../../../Album.module.css'
 
@@ -56,7 +57,6 @@ const mapStateToProps = state => {
     authToken: state.auth.token
   }
 }
-
 const ActiveAddAlbum = connect(
   mapStateToProps,
   dispatch => ({
@@ -65,5 +65,17 @@ const ActiveAddAlbum = connect(
     }
   })
 )(ActiveAddAlbumClass)
+
+ActiveAddAlbumClass.defaultProps = {
+  albums: []
+}
+
+ActiveAddAlbum.propTypes = {
+  albums: PropTypes.any,
+  idUser: PropTypes.string,
+  authToken: PropTypes.string,
+  allowAdd: PropTypes.func,
+  addAlbum: PropTypes.func
+}
 
 export { ActiveAddAlbum }

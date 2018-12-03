@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button } from 'reactstrap'
+import PropTypes from 'prop-types'
 
 import styles from '../../../Album.module.css'
 
@@ -12,6 +13,10 @@ const InitialAddAlbum = ({ allowAdd }) => {
       Добавить альбом
     </Button>
   )
+}
+
+InitialAddAlbum.propTypes = {
+  allowAdd: PropTypes.func
 }
 
 export { InitialAddAlbum }

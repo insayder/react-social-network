@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { helpers } from '../../../../helpers'
 import { NO_PHOTO } from '../../../../constants/albums'
 import { addToRemovableAlbum, deleteFromRemovableAlbum } from '../../../../store/actions'
+import PropTypes from 'prop-types'
 
 import styles from './../../Album.module.css'
 
@@ -34,6 +35,16 @@ const listItem = props => {
       </Card>
     </Col>
   )
+}
+
+listItem.propTypes = {
+  addToRemovable: PropTypes.func,
+  deleteFromRemovable: PropTypes.func,
+  dataAlbum: PropTypes.shape({
+    title: PropTypes.string,
+    userId: PropTypes.string,
+    id: PropTypes.string
+  })
 }
 
 export default connect(

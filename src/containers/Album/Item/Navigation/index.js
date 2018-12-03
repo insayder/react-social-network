@@ -8,6 +8,7 @@ import { changeNameAlbum, removeAlbumPhoto, loadPhotoToDB } from '../../../../st
 import styles from './../../Album.module.css'
 import firebase from 'firebase'
 import { config } from '../../../../constants/firebase'
+import PropTypes from 'prop-types'
 
 class NavAlbum extends React.Component {
   constructor(props) {
@@ -36,7 +37,6 @@ class NavAlbum extends React.Component {
         name: oldName
       }
     })
-    console.log(this.state.files)
   }
   handlerClickLoadPhoto = () => {
     // ReactDOM.findDOMNode(this.refs.files).value = ''
@@ -64,13 +64,18 @@ class NavAlbum extends React.Component {
           idUser: this.props.idUser,
           authToken: this.props.authToken
         }
+        //this.fileUploader.value = ''
         return this.props.loadPhoto(objPhoto)
       })
       .catch(error => {
         console.log(error)
       })
     this.setState({
-      loadButtonStatus: true
+      loadButtonStatus: true,
+      files: {
+        data: [],
+        name: []
+      }
     })
   }
   handlerUploadSuccess = filename => {
@@ -86,9 +91,10 @@ class NavAlbum extends React.Component {
     })
   }
   handlerUploadError = e => {
-    //console.log(e)
+    //  console.log(e)
   }
 
+  handlerChangeUpload = e => {}
   handlerChangeAlbumName = e => {
     this.setState({ editTitle: false })
     this.props.changeAlbumTitle({
@@ -108,7 +114,6 @@ class NavAlbum extends React.Component {
       }
       return false
     })
-    console.log(album)
     return (
       <Row className={`justify-content-between align-items-center ${styles.rowPadding}`}>
         <Col>
@@ -133,10 +138,12 @@ class NavAlbum extends React.Component {
             name="albumPhoto"
             randomizeFilename
             multiple
-            access_token={this.props.authToken}
+            defaultValue=""
+            // access_token={this.props.authToken}
             onUploadError={this.handlerUploadError}
             onUploadStart={this.handlerStartUpload}
             onUploadSuccess={this.handlerUploadSuccess}
+            //onChange={this.handlerChangeUpload}
           />
           <Button
             disabled={this.state.loadButtonStatus}
@@ -163,6 +170,20 @@ const mapStateToProps = (state, ownProp) => {
     albums: state.albums.dataAlbums,
     removablePhoto: state.albums.removableAlbumPhoto
   }
+}
+
+NavAlbum.propTypes = {
+  changeAlbumTitle: PropTypes.func,
+  removeSelectedPhoto: PropTypes.func,
+  loadPhoto: PropTypes.func,
+  idUser: PropTypes.string,
+  authToken: PropTypes.string,
+  albums: PropTypes.array,
+  removablePhoto: PropTypes.shape({
+    idAlbum: PropTypes.string,
+    idPhoto: PropTypes.array
+  }),
+  idAlbum: PropTypes.string
 }
 
 export default connect(

@@ -7,6 +7,7 @@ import AlbumItem from './Item/AlbumItem'
 
 import styles from './Album.module.css'
 import { loadAlbums } from '../../store/actions'
+import PropTypes from 'prop-types'
 
 class Album extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class Album extends React.Component {
       <div className={styles.album}>
         <Switch>
           <Route exact path="/albums" component={AlbumList} />
-          <Route path="/albums/:number" component={AlbumItem} />
+          <Route path="/albums/:albumId" component={AlbumItem} />
         </Switch>
       </div>
     )
@@ -30,6 +31,12 @@ const mapStateToProps = state => {
     userId: state.auth.userId,
     authToken: state.auth.token
   }
+}
+
+Album.propTypes = {
+  userId: PropTypes.string,
+  authToken: PropTypes.string,
+  loadDataAlbums: PropTypes.func
 }
 
 export default connect(
