@@ -50,10 +50,9 @@ export const profileFetch = (userId, idToken, isSelfProfile = true) => {
         } else {
           dispatch(profileViewedUserFetchingFail(error))
         }
+      })
   }
 }
-}
-
 
 export const profileCreate = (userId, idToken, email, profileData = null) => {
   return dispatch => {
@@ -124,18 +123,19 @@ export const updateUserInfo = updateData => {
   return { type: actionTypes.UPDATE_USER_INFO, updateData: updateData }
 }
 
-export const changeUserInfo = (userId, updateData) => {
+export const changeUserInfo = (userId, idToken, updateData) => {
   return dispatch => {
     console.log(updateData)
     firebase
       .database()
       .ref('profiles/' + userId)
       .update(updateData)
+    profileFetch(userId, idToken, updateData)
     dispatch(updateUserInfo(updateData))
   }
 }
 
-export const changeAvatar = (userId, fileName, userState) => {
+export const changeAvatar = (userId, idToken, fileName, updateData) => {
   return dispatch => {
     firebase
       .storage()
@@ -143,7 +143,7 @@ export const changeAvatar = (userId, fileName, userState) => {
       .child(fileName)
       .getDownloadURL()
       .then(url => {
-        dispatch(changeUserInfo(userId, { ...userState, photoUrl: url }))
+        dispatch(changeUserInfo(userId, idToken, { ...updateData, photoUrl: url }))
       })
   }
 }

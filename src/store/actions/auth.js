@@ -1,7 +1,7 @@
 import { axiosAuth, axiosRefreshToken } from '../../axios/auth'
 import * as actionTypes from './actionTypes'
 import { API_KEY } from '../../constants/auth'
-import { profileFetch, profileStateReset } from './profile'
+import { profileFetch, profileStateReset, profileCreate } from './profile'
 import firebase from 'firebase'
 
 export const authStart = (email, password) => {

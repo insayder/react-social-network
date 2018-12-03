@@ -38,13 +38,15 @@ class Redactor extends Component {
   }
   handleSave() {
     const updateData = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      city: this.state.city,
-      phone: this.state.phone
+      firstName: this.state.firstName || '',
+      lastName: this.state.lastName || '' ,
+      city: this.state.city || '',
+      phone: this.state.phone || '',
+      URLphoto: this.props.URLphoto
     }
+    console.log(this.props.URLphoto)
     let userId = firebase.auth().currentUser.uid
-    this.props.changeUserInfo(userId, updateData)
+    this.props.changeUserInfo(userId, this.props.token, updateData)
     this.props.editorClose()
   }
 
@@ -80,13 +82,15 @@ const mapStateToProps = state => {
     firstName: state.profile.firstName,
     lastName: state.profile.lastName,
     city: state.profile.city,
-    phone: state.profile.phone
+    phone: state.profile.phone,
+    URLphoto: state.profile.URLphoto,
+    token: state.auth.token
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeUserInfo: (userId, updateData) => dispatch(changeUserInfo(userId, updateData)),
+    changeUserInfo: (userId, token, updateData) => dispatch(changeUserInfo(userId, token, updateData)),
     editorClose: () => dispatch(editorClose())
   }
 }

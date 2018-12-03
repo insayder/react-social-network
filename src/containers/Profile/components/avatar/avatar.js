@@ -15,7 +15,13 @@ class Avatar extends Component {
   }
   changeAvatar(fileName) {
     console.log(this.props.photoUrl)
-    this.props.changeAvatar(this.props.userId, fileName)
+    const updateData = {
+      firstName: this.props.firstName || '',
+      lastName: this.props.lastName || '' ,
+      city: this.props.city || '',
+      phone: this.props.phone || ''
+    }
+    this.props.changeAvatar(this.props.userId, this.props.token, fileName, updateData)
   }
   render() {
     return (
@@ -40,14 +46,19 @@ const mapStateToProps = state => {
   return {
     token: state.auth.token,
     userId: state.auth.userId,
-    photoUrl: state.profile.photoUrl
+    photoUrl: state.profile.photoUrl,
+    firstName: state.profile.firstName,
+    lastName: state.profile.lastName,
+    city: state.profile.city,
+    phone: state.profile.phone,
+
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     editorStart: () => dispatch(editorStart()),
-    changeAvatar: (userId, fileName) => dispatch(changeAvatar(userId, fileName)),
+    changeAvatar: (userId, token, fileName, updateData) => dispatch(changeAvatar(userId, token, fileName, updateData)),
   }
 }
 
