@@ -1,6 +1,6 @@
 # react-social-network
 
-[![Build Status](https://travis-ci.org/Top-coders-of-the-world/react-social-network.svg?branch=master)](https://travis-ci.org/Top-coders-of-the-world/react-social-network)
+[![Build Status](https://travis-ci.org/top-coders-of-the-world/react-social-network.svg?branch=master)](https://travis-ci.org/top-coders-of-the-world/react-social-network)
 
 https://react-social-network-1f579.firebaseapp.com/
 
