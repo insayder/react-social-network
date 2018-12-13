@@ -11,11 +11,12 @@ import * as actions from '../../store/actions'
 class Wall extends Component {
   componentDidMount() {
     const currentUserId = this.props.match.params.userId || this.props.userId
-    if (currentUserId !== this.props.userId) {
+    const isSelfProfile = !this.props.match.userId || this.props.match.userId === this.props.userId
+    if (isSelfProfile) {
+      this.props.fetchProfile(currentUserId, this.props.idToken, isSelfProfile)
+    } else {
       this.props.fetchProfile(this.props.userId, this.props.idToken)
     }
-    const isSelfProfile = this.props.match.userId === this.props.userId
-    this.props.fetchProfile(currentUserId, this.props.idToken, isSelfProfile)
     this.props.fetchPosts(currentUserId, this.props.idToken)
   }
 
